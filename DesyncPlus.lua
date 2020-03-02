@@ -1,17 +1,28 @@
-local SCRIPT_NAME = GetScriptName()
+-- Desync Plus 
+-- Made by stacky
 
-local SCRIPT_URL = "https://raw.githubusercontent.com/superyor/BetterSync/master/BetterSync.lua"
-local SCRIPT_VERSION_URL = "https://raw.githubusercontent.com/superyor/BetterSync/master/version.txt"
-local SCRIPT_CURRENTVERSION = "1.0"
-local SCRIPT_LATESTVERSION = ""
+local CURRENTVERSION = "0.0"
+local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
+
+local function Update() 
+    if CURRENTVERSION ~= LATESTVERSION then
+        currentScript = file.Open(GetScriptName(), "w")
+        currentScript:Write(http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/DesyncPlus.lua"))
+        currentScript:Close()
+        LoadScript(GetScriptName())
+    end
+end
 
 local DESYNCPLUS_WINDOW = gui.Window("desyncplus", "Desync Plus", 100, 100, 790, 590)
-
 local DESYNCPLUS_TAB = gui.Tab(gui.Reference("Settings"), "desyncplus.updater", "Desync Plus Updater")
+
 local DESYNCPLUS_UPDATER_GBOX = gui.Groupbox(DESYNCPLUS_TAB, "Updater", 10, 10, 250, 0)
-local DESYNCPLUS_UPDATER_CURRENTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Current version: v" .. SCRIPT_CURRENTVERSION)
-local DESYNCPLUS_UPDATER_LATESTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Latest version: v" .. SCRIPT_LATESTVERSION)
-local DESYNCPLUS_UPDATER_UPDATE = gui.Button(DESYNCPLUS_UPDATER_GBOX, "Update", nil)
+local DESYNCPLUS_UPDATER_CURRENTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Current version: v" .. CURRENTVERSION)
+local DESYNCPLUS_UPDATER_LATESTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Latest version: v" .. LATESTVERSION)
+local DESYNCPLUS_UPDATER_UPDATE = gui.Button(DESYNCPLUS_UPDATER_GBOX, "Update", Update)
+
+local DESYNCPLUS_UPDATER_CHANGELOG_GBOX = gui.Groupbox(DESYNCPLUS_TAB, "Changelog", 270, 10, 360, 0)
+local DESYNCPLUS_UPDATER_CHANGELOG_TEXT = gui.Text(DESYNCPLUS_UPDATER_CHANGELOG_GBOX, http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/changelog.txt"))
 
 local DESYNCPLUS_BASEDIRECTION_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Base Direction", 10, 10, 250, 0)
 local DESYNCPLUS_BASEDIRECTION_BASEVALUE = gui.Slider(DESYNCPLUS_BASEDIRECTION_GBOX,"basedirection.basevalue", "Base Value", 0, -180, 180)
@@ -25,13 +36,13 @@ local DESYNCPLUS_BASEDIRECTION_MANUALBACK = gui.Keybox(DESYNCPLUS_BASEDIRECTION_
 local DESYNCPLUS_ROTATION_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Rotation", 270, 10, 250, 0)
 local DESYNCPLUS_ROTATION_MINSLIDER = gui.Slider(DESYNCPLUS_ROTATION_GBOX,"rotation.minslider", "Minimal Value", 0, -58, 58)
 local DESYNCPLUS_ROTATION_MAXSLIDER = gui.Slider(DESYNCPLUS_ROTATION_GBOX,"rotation.maxslider", "Maximal Value", 0, -58, 58)
-local DESYNCPLUS_ROTATION_SPEED = gui.Slider(DESYNCPLUS_ROTATION_GBOX,"rotation.speed", "Speed", 1, 1, 30)
+local DESYNCPLUS_ROTATION_SPEED = gui.Slider(DESYNCPLUS_ROTATION_GBOX,"rotation.speed", "Sway Speed", 1, 1, 30)
 local DESYNCPLUS_ROTATION_TYPE = gui.Combobox(DESYNCPLUS_ROTATION_GBOX, "rotation.type", "Type", "Off", "Jitter", "Sway", "Switch", "Static")
 
 local DESYNCPLUS_LBY_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "LBY", 530, 10, 250, 0)
 local DESYNCPLUS_LBY_MINSLIDER = gui.Slider(DESYNCPLUS_LBY_GBOX,"lby.minslider", "Minimal Value", 0, -180, 180)
 local DESYNCPLUS_LBY_MAXSLIDER = gui.Slider(DESYNCPLUS_LBY_GBOX,"lby.maxslider", "Maximal Value", 0, -180, 180)
-local DESYNCPLUS_LBY_SPEED = gui.Slider(DESYNCPLUS_LBY_GBOX,"lby.speed", "Speed", 1, 1, 30)
+local DESYNCPLUS_LBY_SPEED = gui.Slider(DESYNCPLUS_LBY_GBOX,"lby.speed", "Sway Speed", 1, 1, 30)
 local DESYNCPLUS_LBY_TYPE = gui.Combobox(DESYNCPLUS_LBY_GBOX, "lby.type", "Type", "Off", "Jitter", "Sway", "Switch", "Match", "Opposite", "Static")
 local DESYNCPLUS_LBY_VALUE = gui.Slider(DESYNCPLUS_LBY_GBOX,"lby.value", "LBY Offset value for Opposite/Match", 0, 0, 180)
 
@@ -41,13 +52,13 @@ local DESYNCPLUS_MISC_MASTERSWITCH = gui.Checkbox(DESYNCPLUS_MISC_GBOX, "misc.ma
 local DESYNCPLUS_FAKELAG_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Fakelag", 270, 270, 250, 0)
 local DESYNCPLUS_FAKELAG_MINSLIDER = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"fakelag.minslider", "Minimal Value", 0, 2, 17)
 local DESYNCPLUS_FAKELAG_MAXSLIDER = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"fakelag.maxslider", "Maximal Value", 0, 2, 17)
-local DESYNCPLUS_FAKELAG_SPEED = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"fakelag.speed", "Speed", 0, 1, 20)
+local DESYNCPLUS_FAKELAG_SPEED = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"fakelag.speed", "Sway Speed", 0, 1, 20)
 local DESYNCPLUS_FAKELAG_TYPE = gui.Combobox(DESYNCPLUS_FAKELAG_GBOX, "fakelag.type", "Type", "Off", "Jitter", "Sway", "Switch", "Static")
 local DESYNCPLUS_FAKELAG_STAND = gui.Checkbox(DESYNCPLUS_FAKELAG_GBOX, "fakelag.stand", "Fakelag while standing still", false)
 
-local cs, cd = 0, 0
-local cs2, cd2 = 0, 0
-local cs3, cd3 = 0, 0
+local angle, direction = 0, 0
+local angle2, direction2 = 0, 0
+local angle3, direction3 = 0, 0
 local windowOpened = true
 local lastTick = 0
 local switchMove = true
@@ -61,15 +72,11 @@ local function SetLBY()
         elseif lbyType == 2 then
             maxValue = DESYNCPLUS_LBY_MAXSLIDER:GetValue()
             minValue = DESYNCPLUS_LBY_MINSLIDER:GetValue()
-            speed = DESYNCPLUS_LBY_SPEED:GetValue() / 3
+            speed = DESYNCPLUS_LBY_SPEED:GetValue()
 
-            if cs2 >= maxValue then cd2 = 1
-            elseif cs2 <= minValue + speed then cd2 = 0 end       
-
-            if cd2 == 0 then cs2 = cs2 + speed
-            elseif cd2 == 1 then cs2 = cs2 - speed end    
-            
-            gui.SetValue("rbot.antiaim.base.lby", cs2)   
+            if angle2 >= maxValue then direction2 = 1 elseif angle2 <= minValue + speed then direction2 = 0 end       
+            if direction2 == 0 then angle2 = angle2 + speed elseif direction2 == 1 then angle2 = angle2 - speed end            
+            gui.SetValue("rbot.antiaim.base.lby", angle2)   
         elseif lbyType == 3 then
             maxValue = DESYNCPLUS_LBY_MAXSLIDER:GetValue()
             minValue = DESYNCPLUS_LBY_MINSLIDER:GetValue()
@@ -106,12 +113,9 @@ local function SetRotation()
             minValue = DESYNCPLUS_ROTATION_MINSLIDER:GetValue()
             speed = DESYNCPLUS_ROTATION_SPEED:GetValue() / 3
 
-            if cs >= maxValue then cd = 1
-            elseif cs <= minValue + speed then cd = 0 end       
-
-            if cd == 0 then cs = cs + speed
-            elseif cd == 1 then cs = cs - speed end      
-            gui.SetValue("rbot.antiaim.base.rotation", cs)   
+            if angle >= maxValue then direction = 1 elseif angle <= minValue + speed then direction = 0 end       
+            if direction == 0 then angle = angle + speed elseif direction == 1 then angle = angle - speed end      
+            gui.SetValue("rbot.antiaim.base.rotation", angle)   
         elseif rotationType == 3 then 
             maxValue = DESYNCPLUS_ROTATION_MAXSLIDER:GetValue()
             minValue = DESYNCPLUS_ROTATION_MINSLIDER:GetValue()
@@ -165,13 +169,9 @@ local function SetFakelag()
             minValue = DESYNCPLUS_FAKELAG_MINSLIDER:GetValue()
             speed = DESYNCPLUS_FAKELAG_SPEED:GetValue() / 9
 
-            if cs3 >= maxValue then cd3 = 1
-            elseif cs3 <= minValue + speed then cd3 = 0 end       
-
-            if cd3 == 0 then cs3 = cs3 + speed
-            elseif cd3 == 1 then cs3 = cs3 - speed end     
-
-            gui.SetValue("misc.fakelag.factor", cs3)   
+            if angle3 >= maxValue then direction3 = 1 elseif angle3 <= minValue + speed then direction3 = 0 end       
+            if direction3 == 0 then angle3 = angle3 + speed elseif direction3 == 1 then angle3 = angle3 - speed end     
+            gui.SetValue("misc.fakelag.factor", angle3)   
         elseif fakelagType == 3 then
             curFactor = gui.GetValue("misc.fakelag.factor")
             minSlider = DESYNCPLUS_FAKELAG_MINSLIDER:GetValue()
@@ -186,16 +186,21 @@ local function SetFakelag()
 end
 
 local function ManualAA()
-    if input.IsButtonPressed(DESYNCPLUS_BASEDIRECTION_MANUALLEFT:GetValue()) then 
-        DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(90)
+    if DESYNCPLUS_BASEDIRECTION_MANUALLEFT:GetValue() ~= 0 then
+        if input.IsButtonPressed(DESYNCPLUS_BASEDIRECTION_MANUALLEFT:GetValue()) then 
+            DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(90)
+        end
     end
 
-    if input.IsButtonPressed(DESYNCPLUS_BASEDIRECTION_MANUALRIGHT:GetValue()) then 
-        DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(-90)
+    if DESYNCPLUS_BASEDIRECTION_MANUALRIGHT:GetValue() ~= 0 then
+        if input.IsButtonPressed(DESYNCPLUS_BASEDIRECTION_MANUALRIGHT:GetValue()) then 
+            DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(-90)
+        end
     end
-
-    if input.IsButtonPressed(DESYNCPLUS_BASEDIRECTION_MANUALBACK:GetValue()) then 
-        DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(180)
+    if DESYNCPLUS_BASEDIRECTION_MANUALBACK:GetValue() ~= 0 then
+        if input.IsButtonPressed(DESYNCPLUS_BASEDIRECTION_MANUALBACK:GetValue()) then 
+            DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(180)
+        end
     end
 end
 
