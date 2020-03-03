@@ -1,7 +1,7 @@
 -- Desync Plus 
 -- Made by stacky
 
-local CURRENTVERSION = "2.0"
+local CURRENTVERSION = "1.0"
 local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
 
 local function Update() 
@@ -180,12 +180,13 @@ local function SetBaseDirection(isMoving)
             if baseValue + RandomRange > 180 or baseValue + RandomRange < -180 then baseValue = baseValue * -1 end
             gui.SetValue("rbot.antiaim.base", baseValue + RandomRange)
         elseif BaseDirectionType == 2 then      
-            angle = 0
-            for w in gui.GetValue("rbot.antiaim.base"):gmatch("%S+") do angle = tonumber(w); break end
-            if angle == maxValue then gui.SetValue("rbot.antiaim.base", minValue)
-            elseif angle == minValue then gui.SetValue("rbot.antiaim.base", maxValue)
-            else gui.SetValue("rbot.antiaim.base", minValue) end 
-
+            if globals.TickCount() > lastTick + 1 then
+                angle = 0
+                for w in gui.GetValue("rbot.antiaim.base"):gmatch("%S+") do angle = tonumber(w); break end
+                if angle == maxValue then gui.SetValue("rbot.antiaim.base", minValue)
+                elseif angle == minValue then gui.SetValue("rbot.antiaim.base", maxValue)
+                else gui.SetValue("rbot.antiaim.base", minValue) end 
+            else SetBaseDirection(isMoving) end
         elseif BaseDirectionType == 3 then
             gui.SetValue("rbot.antiaim.base", baseValue)
         end
@@ -250,6 +251,22 @@ local function MoveHandler(UserCmd)
     end
 end
 callbacks.Register("CreateMove", MoveHandler)
+
+
+local cock = false
+local function main2()
+    if globals.TickCount() > lastTick + 1 then
+        if cock then
+            gui.SetValue("rbot.antiaim.base", 90)
+        else
+            gui.SetValue("rbot.antiaim.base", -90)
+        end
+    else
+        main2()
+    end
+    lastTick = globals.TickCount()
+    cock = not cock
+end
 
 local function main()
     if DESYNCPLUS_BASEDIRECTION_STATE:GetValue() ~= BASEDIRECTION_STATE then
@@ -339,7 +356,6 @@ local function main()
 
     if DESYNCPLUS_MISC_MASTERSWITCH:GetValue() then
         ManualAA()
-
         if globals.TickCount() > lastTick then 
             localPlayer = entities.GetLocalPlayer()
             if localPlayer then 
@@ -363,5 +379,4 @@ local function main()
     end
     lastTick = globals.TickCount()
 end
-
 callbacks.Register("Draw", main)
