@@ -60,3 +60,14 @@ Lua script for Aimware.net that allows users to customize their anti-aims even m
 ## Misc
 * Master Switch - Enables or disables everything
 * Fakelag while standing still - Makes you move a little back and forth to trigger Fakelag
+
+# Desync Plus Updater
+![image](https://i.imgur.com/X29DnC9.png)
+
+## Updater
+* Current Version - Version of your current LUA
+* Latest Version - Latest version of Desync Plus
+* Update - Updates your LUA to the latest one
+
+## Changelog
+* Shows the changelog for the latest version
