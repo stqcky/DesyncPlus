@@ -71,3 +71,6 @@ Lua script for Aimware.net that allows users to customize their anti-aims even m
 
 ## Changelog
 * Shows the changelog for the latest version
+
+# Video Showcase
+* https://www.youtube.com/watch?v=Hqzyb6RCyE0
