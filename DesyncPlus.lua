@@ -250,22 +250,6 @@ local function MoveHandler(UserCmd)
 end
 callbacks.Register("CreateMove", MoveHandler)
 
-
-local cock = false
-local function main2()
-    if globals.TickCount() > lastTick + 1 then
-        if cock then
-            gui.SetValue("rbot.antiaim.base", 90)
-        else
-            gui.SetValue("rbot.antiaim.base", -90)
-        end
-    else
-        main2()
-    end
-    lastTick = globals.TickCount()
-    cock = not cock
-end
-
 local function main()
     if DESYNCPLUS_BASEDIRECTION_STATE:GetValue() ~= BASEDIRECTION_STATE then
         BASEDIRECTION_STATE = DESYNCPLUS_BASEDIRECTION_STATE:GetValue()
