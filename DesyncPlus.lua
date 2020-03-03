@@ -16,8 +16,6 @@ end
 local DESYNCPLUS_WINDOW = gui.Window("desyncplus", "Desync Plus", 100, 100, 790, 610)
 local DESYNCPLUS_TAB = gui.Tab(gui.Reference("Settings"), "desyncplus.updater", "Desync Plus Updater")
 
-local test = gui.Tab(DESYNCPLUS_WINDOW, "test", "test")
-
 local DESYNCPLUS_UPDATER_GBOX = gui.Groupbox(DESYNCPLUS_TAB, "Updater", 10, 10, 250, 0)
 local DESYNCPLUS_UPDATER_CURRENTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Current version: v" .. CURRENTVERSION)
 local DESYNCPLUS_UPDATER_LATESTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Latest version: v" .. LATESTVERSION)
