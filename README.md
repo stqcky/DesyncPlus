@@ -39,7 +39,7 @@ Lua script for Aimware.net that allows users to customize their anti-aims even m
   * Match - Matches the side of the LBY offset with the rotation offset and sets it to **LBY Value**
   * Opposite - Makes is so the side of the LBY offset is the opposite of the rotation offset and sets it to **LBY Value**
   * Static - Sets the LBY offset to **Minimal Value**
-* Lby Offset value for Opposite/Match - This is the value that will be used by the **Match** and **Opposite** types
+* Lby Value - This is the value that will be used by the **Match** and **Opposite** types
 
 ## Manual AA
 * Left Button - Changes the **Base Value** to 90 (Facing left)
@@ -71,3 +71,6 @@ Lua script for Aimware.net that allows users to customize their anti-aims even m
 
 ## Changelog
 * Shows the changelog for the latest version
+
+# Video Showcase
+* https://www.youtube.com/watch?v=Hqzyb6RCyE0
