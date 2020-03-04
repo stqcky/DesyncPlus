@@ -1,7 +1,7 @@
 -- Desync Plus 
 -- Made by stacky
 
-local CURRENTVERSION = "1.1"
+local CURRENTVERSION = "1.1.1"
 local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
 
 local function Update() 
