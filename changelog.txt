@@ -1,3 +1,12 @@
+Version 1.2
+---------------
+- Added a Window Toggle Button
+- Added In Air state
+- Added an update notifier
+- Removed LBY State Combobox
+- Removed FakeLag Switch Type because it was implemented in the cheat
+- Removed FakeLag while standing still because it was implemented in the cheat
+
 Version 1.1.1
 ---------------
 - Fixed Slow Walk Customizer
