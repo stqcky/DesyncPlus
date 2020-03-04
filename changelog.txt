@@ -1,3 +1,7 @@
-Version 1.0
+Version 1.1
 ---------------
-Initial Release
+- Moved Manaul AA to Ragebot -> Anti-Aim -> Manual Anti-Aim
+- Added a Slow Walk customizer
+- Fixed config saving (should work like in any other LUA)
+- Removed version check from the Update function
+- Removed Base Direction Type Switch until I fix it

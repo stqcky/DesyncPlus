@@ -1,40 +1,76 @@
 -- Desync Plus 
 -- Made by stacky
 
-local CURRENTVERSION = "1.0"
+local CURRENTVERSION = "1.1"
 local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
 
 local function Update() 
-    if CURRENTVERSION ~= LATESTVERSION then
-        currentScript = file.Open(GetScriptName(), "w")
-        currentScript:Write(http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/DesyncPlus.lua"))
-        currentScript:Close()
-        LoadScript(GetScriptName())
-    end
+    currentScript = file.Open(GetScriptName(), "w")
+    currentScript:Write(http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/DesyncPlus.lua"))
+    currentScript:Close()
+    LoadScript(GetScriptName())
 end
 
+local DESYNCPLUS_SETTINGSWINDOW = gui.Window("settings", "0", 0, 0, 0, 0)
+DESYNCPLUS_SETTINGSWINDOW:SetActive(0)
+local DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_BASEVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "bd.stand.basevalue", "", 0, -180, 180)
+local DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_MINVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "bd.stand.minvalue", "", 0, -180, 180)
+local DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_MAXVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "bd.stand.maxvalue", "", 0, -180, 180)
+local DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_TYPE = gui.Combobox(DESYNCPLUS_SETTINGSWINDOW, "bd.stand.type", "Type", "Off", "Jitter", "Switch (WIP)", "Static")
+
+local DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_BASEVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "bd.move.basevalue", "", 0, -180, 180)
+local DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_MINVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "bd.move.minvalue", "", 0, -180, 180)
+local DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_MAXVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "bd.move.maxvalue", "", 0, -180, 180)
+local DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_TYPE = gui.Combobox(DESYNCPLUS_SETTINGSWINDOW, "bd.move.type", "", "Type", "Off", "Jitter", "Switch (WIP)", "Static")
+
+local DESYNCPLUS_SETTINGS_STAND_ROTATION_MINVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "rotation.stand.minvalue", "", 0, -58, 58)
+local DESYNCPLUS_SETTINGS_STAND_ROTATION_MAXVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "rotation.stand.maxvalue", "", 0, -58, 58)
+local DESYNCPLUS_SETTINGS_STAND_ROTATION_CYCLESPEED = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "rotation.stand.cyclespeed", "", 1, 1, 30)
+local DESYNCPLUS_SETTINGS_STAND_ROTATION_TYPE = gui.Combobox(DESYNCPLUS_SETTINGSWINDOW, "rotation.stand.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Static")
+
+local DESYNCPLUS_SETTINGS_MOVE_ROTATION_MINVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "rotation.move.minvalue", "", 0, -58, 58)
+local DESYNCPLUS_SETTINGS_MOVE_ROTATION_MAXVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "rotation.move.maxvalue", "", 0, -58, 58)
+local DESYNCPLUS_SETTINGS_MOVE_ROTATION_CYCLESPEED = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "rotation.move.cyclespeed", "", 1, 1, 30)
+local DESYNCPLUS_SETTINGS_MOVE_ROTATION_TYPE = gui.Combobox(DESYNCPLUS_SETTINGSWINDOW, "rotation.move.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Static")
+
+local DESYNCPLUS_SETTINGS_STAND_LBY_MINVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "lby.stand.minvalue", "", 0, -180, 180)
+local DESYNCPLUS_SETTINGS_STAND_LBY_MAXVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "lby.stand.maxvalue", "", 0, -180, 180)
+local DESYNCPLUS_SETTINGS_STAND_LBY_CYCLESPEED = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "lby.stand.cyclespeed", "", 1, 1, 30)
+local DESYNCPLUS_SETTINGS_STAND_LBY_TYPE = gui.Combobox(DESYNCPLUS_SETTINGSWINDOW, "lby.stand.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Match", "Opposite", "Static")
+local DESYNCPLUS_SETTINGS_STAND_LBY_VALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "lby.stand.value", "", 0, 0, 180)
+
+local DESYNCPLUS_SETTINGS_MOVE_LBY_MINVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "lby.move.minvalue", "", 0, -180, 180)
+local DESYNCPLUS_SETTINGS_MOVE_LBY_MAXVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "lby.move.maxvalue", "", 0, -180, 180)
+local DESYNCPLUS_SETTINGS_MOVE_LBY_CYCLESPEED = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "lby.move.cyclespeed", "", 1, 1, 30)
+local DESYNCPLUS_SETTINGS_MOVE_LBY_TYPE = gui.Combobox(DESYNCPLUS_SETTINGSWINDOW, "lby.move.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Match", "Opposite", "Static")
+local DESYNCPLUS_SETTINGS_MOVE_LBY_VALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "lby.move.value", "", 0, 0, 180)
+
+local DESYNCPLUS_SETTINGS_SLOWWALK_MINVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "slowwalk.minvalue", "", 0, -58, 58)
+local DESYNCPLUS_SETTINGS_SLOWWALK_MAXVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "slowwalk.maxvalue", "", 0, -58, 58)
+local DESYNCPLUS_SETTINGS_SLOWWALK_CYCLESPEED = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "slowwalk.cyclespeed", "", 1, 1, 30)
+local DESYNCPLUS_SETTINGS_SLOWWALK_TYPE = gui.Combobox(DESYNCPLUS_SETTINGSWINDOW, "slowwalk.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Static")
+
+local DESYNCPLUS_SETTINGS_FAKELAG_MINVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "fakelag.minvalue", "", 0, -58, 58)
+local DESYNCPLUS_SETTINGS_FAKELAG_MAXVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "fakelag.maxvalue", "", 0, -58, 58)
+local DESYNCPLUS_SETTINGS_FAKELAG_CYCLESPEED = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "fakelag.cyclespeed", "", 1, 1, 30)
+local DESYNCPLUS_SETTINGS_FAKELAG_TYPE = gui.Combobox(DESYNCPLUS_SETTINGSWINDOW, "fakelag.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Static")
+
+local DESYNCPLUS_SETTINGS_MASTERSWITCH = gui.Checkbox(DESYNCPLUS_SETTINGSWINDOW, "misc.masterswitch", "", false)
+local DESYNCPLUS_SETTINGS_FAKELAGSTAND = gui.Checkbox(DESYNCPLUS_SETTINGSWINDOW, "mist.fakelagstand", "", false)
+
 local DESYNCPLUS_WINDOW = gui.Window("desyncplus", "Desync Plus", 100, 100, 790, 610)
-local DESYNCPLUS_TAB = gui.Tab(gui.Reference("Settings"), "desyncplus.updater", "Desync Plus Updater")
 
-local DESYNCPLUS_UPDATER_GBOX = gui.Groupbox(DESYNCPLUS_TAB, "Updater", 10, 10, 250, 0)
-local DESYNCPLUS_UPDATER_CURRENTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Current version: v" .. CURRENTVERSION)
-local DESYNCPLUS_UPDATER_LATESTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Latest version: v" .. LATESTVERSION)
-local DESYNCPLUS_UPDATER_UPDATE = gui.Button(DESYNCPLUS_UPDATER_GBOX, "Update", Update)
-
-local DESYNCPLUS_UPDATER_CHANGELOG_GBOX = gui.Groupbox(DESYNCPLUS_TAB, "Changelog", 270, 10, 360, 0)
-local DESYNCPLUS_UPDATER_CHANGELOG_TEXT = gui.Text(DESYNCPLUS_UPDATER_CHANGELOG_GBOX, http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/changelog.txt"))
+local DESYNCPLUS_GBOX = gui.Groupbox(gui.Reference("Ragebot", "Anti-Aim"), "Manual Anti-Aim", 15, 650, 300, 0)
+local DESYNCPLUS_MANUAL_LEFT = gui.Keybox(DESYNCPLUS_GBOX, "desyncplus.manual.left", "Left Button", 0)
+local DESYNCPLUS_MANUAL_RIGHT = gui.Keybox(DESYNCPLUS_GBOX, "desyncplus.manual.right", "Right Button", 0)
+local DESYNCPLUS_MANUAL_BACK = gui.Keybox(DESYNCPLUS_GBOX, "desyncplus.manual.back", "Back Button", 0)
 
 local DESYNCPLUS_BASEDIRECTION_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Base Direction", 10, 10, 250, 0)
 local DESYNCPLUS_BASEDIRECTION_STATE = gui.Combobox(DESYNCPLUS_BASEDIRECTION_GBOX, "basedirection.state", "State", "Standing", "Moving")
 local DESYNCPLUS_BASEDIRECTION_BASEVALUE = gui.Slider(DESYNCPLUS_BASEDIRECTION_GBOX,"basedirection.basevalue", "Base Value", 0, -180, 180)
 local DESYNCPLUS_BASEDIRECTION_MINSLIDER = gui.Slider(DESYNCPLUS_BASEDIRECTION_GBOX,"basedirection.minslider", "Minimal Value", 0, -180, 180)
 local DESYNCPLUS_BASEDIRECTION_MAXSLIDER = gui.Slider(DESYNCPLUS_BASEDIRECTION_GBOX,"basedirection.maxslider", "Maximal Value", 0, -180, 180)
-local DESYNCPLUS_BASEDIRECTION_TYPE = gui.Combobox(DESYNCPLUS_BASEDIRECTION_GBOX, "basedirection.type", "Type", "Off", "Jitter", "Switch", "Static")
-
-local DESYNCPLUS_MANUAL_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Manual AA", 10, 320, 250, 0)
-local DESYNCPLUS_MANUAL_LEFT = gui.Keybox(DESYNCPLUS_MANUAL_GBOX, "manual.left", "Left Button", 0)
-local DESYNCPLUS_MANUAL_RIGHT = gui.Keybox(DESYNCPLUS_MANUAL_GBOX, "manual.right", "Right Button", 0)
-local DESYNCPLUS_MANUAL_BACK = gui.Keybox(DESYNCPLUS_MANUAL_GBOX, "manual.back", "Back Button", 0)
+local DESYNCPLUS_BASEDIRECTION_TYPE = gui.Combobox(DESYNCPLUS_BASEDIRECTION_GBOX, "basedirection.type", "Type", "Off", "Jitter", "Switch (WIP)", "Static")
 
 local DESYNCPLUS_ROTATION_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Rotation", 270, 10, 250, 0)
 local DESYNCPLUS_ROTATION_STATE = gui.Combobox(DESYNCPLUS_ROTATION_GBOX, "rotation.state", "State", "Standing", "Moving")
@@ -54,6 +90,14 @@ local DESYNCPLUS_LBY_VALUE = gui.Slider(DESYNCPLUS_LBY_GBOX,"lby.value", "LBY Va
 local DESYNCPLUS_MISC_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Misc", 530, 370, 250, 0)
 local DESYNCPLUS_MISC_MASTERSWITCH = gui.Checkbox(DESYNCPLUS_MISC_GBOX, "misc.masterswitch", "Master Switch", false)
 local DESYNCPLUS_MISC_FAKELAGSTAND = gui.Checkbox(DESYNCPLUS_MISC_GBOX, "misc.fakelagstand", "Fakelag while standing still", false)
+local DESYNCPLUS_MISC_LOADCFG = gui.Button(DESYNCPLUS_MISC_GBOX, "misc.loadcfg", "Load CFG", false)
+local DESYNCPLUS_MISC_SAVECFG = gui.Button(DESYNCPLUS_MISC_GBOX, "misc.savecfg", "Save CFG", false)
+
+local DESYNCPLUS_SLOWWALK_GBOX =  gui.Groupbox(DESYNCPLUS_WINDOW, "Slow Walk", 10, 320, 250, 0)
+local DESYNCPLUS_SLOWWALK_MINSLIDER = gui.Slider(DESYNCPLUS_SLOWWALK_GBOX,"slowwalk.minslider", "Minimal Value", 0, 1, 100)
+local DESYNCPLUS_SLOWWALK_MAXSLIDER = gui.Slider(DESYNCPLUS_SLOWWALK_GBOX,"slowwalk.maxslider", "Maximal Value", 0, 1, 100)
+local DESYNCPLUS_SLOWWALK_SPEED = gui.Slider(DESYNCPLUS_SLOWWALK_GBOX,"slowwalk.speed", "Cycle Speed", 0, 1, 20)
+local DESYNCPLUS_SLOWWALK_TYPE = gui.Combobox(DESYNCPLUS_SLOWWALK_GBOX, "slowwalk.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Static")
 
 local DESYNCPLUS_FAKELAG_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Fakelag", 270, 320, 250, 0)
 local DESYNCPLUS_FAKELAG_MINSLIDER = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"fakelag.minslider", "Minimal Value", 0, 2, 17)
@@ -61,17 +105,15 @@ local DESYNCPLUS_FAKELAG_MAXSLIDER = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"fakelag
 local DESYNCPLUS_FAKELAG_SPEED = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"fakelag.speed", "Cycle Speed", 0, 1, 20)
 local DESYNCPLUS_FAKELAG_TYPE = gui.Combobox(DESYNCPLUS_FAKELAG_GBOX, "fakelag.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Static")
 
-local STAND_BASEDIRECTION_BASEVALUE, STAND_BASEDIRECTION_MINVALUE, STAND_BASEDIRECTION_MAXVALUE, STAND_BASEDIRECTION_TYPE = 0
-local STAND_ROTATION_MINVALUE, STAND_ROTATION_MAXVALUE, STAND_ROTATION_TYPE = 0
-local STAND_ROTATION_CYCLESPEED = 1
-local STAND_LBY_MINVALUE, STAND_LBY_MAXVALUE, STAND_LBY_TYPE, STAND_LBY_VALUE = 0
-local STAND_LBY_CYCLESPEED = 1
+local DESYNCPLUS_TAB = gui.Tab(gui.Reference("Settings"), "desyncplus.tab", "Desync Plus")
 
-local MOVE_BASEDIRECTION_BASEVALUE, MOVE_BASEDIRECTION_MINVALUE, MOVE_BASEDIRECTION_MAXVALUE, MOVE_BASEDIRECTION_TYPE = 0
-local MOVE_ROTATION_MINVALUE, MOVE_ROTATION_MAXVALUE, MOVE_ROTATION_TYPE = 0
-local MOVE_ROTATION_CYCLESPEED = 1
-local MOVE_LBY_MINVALUE, MOVE_LBY_MAXVALUE, MOVE_LBY_TYPE, MOVE_LBY_VALUE = 0
-local MOVE_LBY_CYCLESPEED = 1
+local DESYNCPLUS_UPDATER_GBOX = gui.Groupbox(DESYNCPLUS_TAB, "Updater", 10, 10, 250, 0)
+local DESYNCPLUS_UPDATER_CURRENTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Current version: v" .. CURRENTVERSION)
+local DESYNCPLUS_UPDATER_LATESTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Latest version: v" .. LATESTVERSION)
+local DESYNCPLUS_UPDATER_UPDATE = gui.Button(DESYNCPLUS_UPDATER_GBOX, "Update", Update)
+
+local DESYNCPLUS_UPDATER_CHANGELOG_GBOX = gui.Groupbox(DESYNCPLUS_TAB, "Changelog", 270, 10, 360, 0)
+local DESYNCPLUS_UPDATER_CHANGELOG_TEXT = gui.Text(DESYNCPLUS_UPDATER_CHANGELOG_GBOX, http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/changelog.txt"))
 
 local BASEDIRECTION_STATE = 0
 local ROTATION_STATE = 0
@@ -80,23 +122,24 @@ local LBY_STATE = 0
 local angle, direction = 0, 0
 local angle2, direction2 = 0, 0
 local angle3, direction3 = 0, 0
+local angle4, direction4 = 0, 0
 local windowOpened = true
 local lastTick = 0
 local flMove = 3
 
 local function SetLBY(isMoving)
-    if isMoving then lbyType = MOVE_LBY_TYPE else lbyType = STAND_LBY_TYPE end
+    if isMoving then lbyType = DESYNCPLUS_SETTINGS_MOVE_LBY_TYPE:GetValue() else lbyType = DESYNCPLUS_SETTINGS_STAND_LBY_TYPE:GetValue() end
     if lbyType ~= 0 then
         if isMoving then
-            minValue = MOVE_LBY_MINVALUE
-            maxValue = MOVE_LBY_MAXVALUE
-            speed = MOVE_LBY_CYCLESPEED
-            value = MOVE_LBY_VALUE
+            minValue = DESYNCPLUS_SETTINGS_MOVE_LBY_MINVALUE:GetValue()
+            maxValue = DESYNCPLUS_SETTINGS_MOVE_LBY_MAXVALUE:GetValue()
+            speed = DESYNCPLUS_SETTINGS_MOVE_LBY_CYCLESPEED:GetValue()
+            value = DESYNCPLUS_SETTINGS_MOVE_LBY_VALUE:GetValue()
         else
-            minValue = STAND_LBY_MINVALUE
-            maxValue = STAND_LBY_MAXVALUE
-            speed = STAND_LBY_CYCLESPEED
-            value = STAND_LBY_VALUE
+            minValue = DESYNCPLUS_SETTINGS_STAND_LBY_MINVALUE:GetValue()
+            maxValue = DESYNCPLUS_SETTINGS_STAND_LBY_MAXVALUE:GetValue()
+            speed = DESYNCPLUS_SETTINGS_STAND_LBY_CYCLESPEED:GetValue()
+            value = DESYNCPLUS_SETTINGS_STAND_LBY_VALUE:GetValue()
         end
 
         if lbyType == 1 then
@@ -131,16 +174,16 @@ local function SetLBY(isMoving)
 end
 
 local function SetRotation(isMoving)
-    if isMoving then rotationType = MOVE_ROTATION_TYPE else rotationType = STAND_ROTATION_TYPE end
+    if isMoving then rotationType = DESYNCPLUS_SETTINGS_MOVE_ROTATION_TYPE:GetValue() else rotationType = DESYNCPLUS_SETTINGS_STAND_ROTATION_TYPE:GetValue() end
     if rotationType ~= 0 then  
         if isMoving then
-            minValue = MOVE_ROTATION_MINVALUE
-            maxValue = MOVE_ROTATION_MAXVALUE
-            speed = MOVE_ROTATION_CYCLESPEED / 3
+            minValue = DESYNCPLUS_SETTINGS_MOVE_ROTATION_MINVALUE:GetValue()
+            maxValue = DESYNCPLUS_SETTINGS_MOVE_ROTATION_MAXVALUE:GetValue()
+            speed = DESYNCPLUS_SETTINGS_MOVE_ROTATION_CYCLESPEED:GetValue() / 3
         else
-            minValue = STAND_ROTATION_MINVALUE
-            maxValue = STAND_ROTATION_MAXVALUE
-            speed = STAND_ROTATION_CYCLESPEED / 3
+            minValue = DESYNCPLUS_SETTINGS_STAND_ROTATION_MINVALUE:GetValue()
+            maxValue = DESYNCPLUS_SETTINGS_STAND_ROTATION_MAXVALUE:GetValue()
+            speed = DESYNCPLUS_SETTINGS_STAND_ROTATION_CYCLESPEED:GetValue() / 3
         end
 
         if rotationType == 1 then
@@ -161,30 +204,29 @@ local function SetRotation(isMoving)
 end
 
 local function SetBaseDirection(isMoving)
-    if isMoving then BaseDirectionType = MOVE_BASEDIRECTION_TYPE else BaseDirectionType = STAND_BASEDIRECTION_TYPE end
+    if isMoving then BaseDirectionType = DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_TYPE:GetValue() else BaseDirectionType = DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_TYPE:GetValue() end
     if BaseDirectionType ~= 0 then          
         if isMoving then
-            baseValue = MOVE_BASEDIRECTION_BASEVALUE
-            minValue = MOVE_BASEDIRECTION_MINVALUE
-            maxValue = MOVE_BASEDIRECTION_MAXVALUE
+            baseValue = DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_BASEVALUE:GetValue()
+            minValue = DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_MINVALUE:GetValue()
+            maxValue = DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_MAXVALUE:GetValue()
         else
-            baseValue = STAND_BASEDIRECTION_BASEVALUE
-            minValue = STAND_BASEDIRECTION_MINVALUE
-            maxValue = STAND_BASEDIRECTION_MAXVALUE
+            baseValue = DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_BASEVALUE:GetValue()
+            minValue = DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_MINVALUE:GetValue()
+            maxValue = DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_MAXVALUE:GetValue()
         end
-
         if BaseDirectionType == 1 then
             RandomRange = math.random(minValue, maxValue)       
             if baseValue + RandomRange > 180 or baseValue + RandomRange < -180 then baseValue = baseValue * -1 end
             gui.SetValue("rbot.antiaim.base", baseValue + RandomRange)
-        elseif BaseDirectionType == 2 then      
-            if globals.TickCount() > lastTick + 1 then
-                angle = 0
-                for w in gui.GetValue("rbot.antiaim.base"):gmatch("%S+") do angle = tonumber(w); break end
-                if angle == maxValue then gui.SetValue("rbot.antiaim.base", minValue)
-                elseif angle == minValue then gui.SetValue("rbot.antiaim.base", maxValue)
-                else gui.SetValue("rbot.antiaim.base", minValue) end 
-            else SetBaseDirection(isMoving) end
+        elseif BaseDirectionType == 2 then     
+            --if globals.TickCount() > lastTick + 1 then
+                --angle = 0
+                --for w in gui.GetValue("rbot.antiaim.base"):gmatch("%S+") do angle = tonumber(w); break end
+                --if angle == maxValue then gui.SetValue("rbot.antiaim.base", minValue)
+                --elseif angle == minValue then gui.SetValue("rbot.antiaim.base", maxValue)
+                --else gui.SetValue("rbot.antiaim.base", minValue) end 
+           --else SetBaseDirection(isMoving) end
         elseif BaseDirectionType == 3 then
             gui.SetValue("rbot.antiaim.base", baseValue)
         end
@@ -192,27 +234,48 @@ local function SetBaseDirection(isMoving)
 end
 
 local function SetFakelag()
-    fakelagType = DESYNCPLUS_FAKELAG_TYPE:GetValue()
+    fakelagType = DESYNCPLUS_SETTINGS_FAKELAG_TYPE:GetValue()
+    minValue = DESYNCPLUS_SETTINGS_FAKELAG_MINVALUE:GetValue()
+    maxValue = DESYNCPLUS_SETTINGS_FAKELAG_MAXVALUE:GetValue()
+    speed = DESYNCPLUS_SETTINGS_FAKELAG_CYCLESPEED:GetValue()
+
     if fakelagType ~= 0 then
         if fakelagType == 1 then
-            gui.SetValue("misc.fakelag.factor", math.random(DESYNCPLUS_FAKELAG_MINSLIDER:GetValue(), DESYNCPLUS_FAKELAG_MAXSLIDER:GetValue()))
+            gui.SetValue("misc.fakelag.factor", math.random(minValue, maxValue))
         elseif fakelagType == 2 then
-            maxValue = DESYNCPLUS_FAKELAG_MAXSLIDER:GetValue()
-            minValue = DESYNCPLUS_FAKELAG_MINSLIDER:GetValue()
-            speed = DESYNCPLUS_FAKELAG_SPEED:GetValue() / 9
-
             if angle3 >= maxValue then direction3 = 1 elseif angle3 <= minValue + speed then direction3 = 0 end       
             if direction3 == 0 then angle3 = angle3 + speed elseif direction3 == 1 then angle3 = angle3 - speed end     
             gui.SetValue("misc.fakelag.factor", angle3)   
         elseif fakelagType == 3 then
             curFactor = gui.GetValue("misc.fakelag.factor")
-            minSlider = DESYNCPLUS_FAKELAG_MINSLIDER:GetValue()
-            maxSlider = DESYNCPLUS_FAKELAG_MAXSLIDER:GetValue()
-            if curFactor == maxSlider then gui.SetValue("misc.fakelag.factor", minSlider)
-            elseif curFactor == minSlider then gui.SetValue("misc.fakelag.factor", maxSlider)
-            else gui.SetValue("misc.fakelag.factor", minSlider) end
+            if curFactor == maxValue then gui.SetValue("misc.fakelag.factor", minValue)
+            elseif curFactor == minValue then gui.SetValue("misc.fakelag.factor", maxValue)
+            else gui.SetValue("misc.fakelag.factor", minValue) end
         elseif fakelagType == 4 then
-            gui.SetValue("misc.fakelag.factor", DESYNCPLUS_FAKELAG_MINSLIDER:GetValue())
+            gui.SetValue("misc.fakelag.factor", minValue)
+        end
+    end
+end
+
+local function SetSlowWalk()
+    slowwalkType = DESYNCPLUS_SETTINGS_SLOWWALK_TYPE:GetValue()
+    minValue = DESYNCPLUS_SETTINGS_SLOWWALK_MINVALUE:GetValue()
+    maxValue = DESYNCPLUS_SETTINGS_SLOWWALK_MAXVALUE:GetValue()
+    speed = DESYNCPLUS_SETTINGS_SLOWWALK_CYCLESPEED:GetValue()
+    if slowwalkType ~= 0 then
+        if slowwalkType == 1 then
+            gui.SetValue("rbot.accuracy.movement.slowspeed", minValue, maxValue)
+        elseif slowwalkType == 2 then
+            if angle4 >= maxValue then direction4 = 1 elseif angle4 <= minValue + speed then direction4 = 0 end       
+            if direction4 == 0 then angle4 = angle4 + speed elseif direction4 == 1 then angle4 = angle4 - speed end     
+            gui.SetValue("rbot.accuracy.movement.slowspeed", angle4)   
+        elseif slowwalkType == 3 then
+            curValue = gui.GetValue("rbot.accuracy.movement.slowspeed")
+            if curValue == maxValue then gui.SetValue("rbot.accuracy.movement.slowspeed", minValue)
+            elseif curValue == minValue then gui.SetValue("rbot.accuracy.movement.slowspeed", maxValue)
+            else gui.SetValue("rbot.accuracy.movement.slowspeed", minValue) end
+        elseif slowwalkType == 4 then
+            gui.SetValue("rbot.accuracy.movement.slowspeed", minValue)
         end
     end
 end
@@ -251,89 +314,89 @@ end
 callbacks.Register("CreateMove", MoveHandler)
 
 local function main()
-    if DESYNCPLUS_BASEDIRECTION_STATE:GetValue() ~= BASEDIRECTION_STATE then
-        BASEDIRECTION_STATE = DESYNCPLUS_BASEDIRECTION_STATE:GetValue()
-        if BASEDIRECTION_STATE == 0 then
-            DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(STAND_BASEDIRECTION_BASEVALUE)
-            DESYNCPLUS_BASEDIRECTION_MINSLIDER:SetValue(STAND_BASEDIRECTION_MINVALUE)
-            DESYNCPLUS_BASEDIRECTION_MAXSLIDER:SetValue(STAND_BASEDIRECTION_MAXVALUE)
-            DESYNCPLUS_BASEDIRECTION_TYPE:SetValue(STAND_BASEDIRECTION_TYPE)
-        else
-            DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(MOVE_BASEDIRECTION_BASEVALUE)
-            DESYNCPLUS_BASEDIRECTION_MINSLIDER:SetValue(MOVE_BASEDIRECTION_MINVALUE)
-            DESYNCPLUS_BASEDIRECTION_MAXSLIDER:SetValue(MOVE_BASEDIRECTION_MAXVALUE)
-            DESYNCPLUS_BASEDIRECTION_TYPE:SetValue(MOVE_BASEDIRECTION_TYPE)
+    if DESYNCPLUS_BASEDIRECTION_STATE:GetValue() ~= BASEDIRECTION_CURRENTSTATE then
+        BASEDIRECTION_CURRENTSTATE = DESYNCPLUS_BASEDIRECTION_STATE:GetValue()
+        if BASEDIRECTION_CURRENTSTATE == 0 then
+            DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_BASEVALUE:GetValue())
+            DESYNCPLUS_BASEDIRECTION_MINSLIDER:SetValue(DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_MINVALUE:GetValue())
+            DESYNCPLUS_BASEDIRECTION_MAXSLIDER:SetValue(DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_MAXVALUE:GetValue())
+            DESYNCPLUS_BASEDIRECTION_TYPE:SetValue(DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_TYPE:GetValue())
+        elseif BASEDIRECTION_CURRENTSTATE == 1 then
+            DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_BASEVALUE:GetValue())
+            DESYNCPLUS_BASEDIRECTION_MINSLIDER:SetValue(DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_MINVALUE:GetValue())
+            DESYNCPLUS_BASEDIRECTION_MAXSLIDER:SetValue(DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_MAXVALUE:GetValue())
+            DESYNCPLUS_BASEDIRECTION_TYPE:SetValue(DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_TYPE:GetValue())
         end
     end
 
-    if DESYNCPLUS_ROTATION_STATE:GetValue() ~= ROTATION_STATE then
-        ROTATION_STATE = DESYNCPLUS_ROTATION_STATE:GetValue()
-        if ROTATION_STATE == 0 then
-            DESYNCPLUS_ROTATION_MINSLIDER:SetValue(STAND_ROTATION_MINVALUE)
-            DESYNCPLUS_ROTATION_MAXSLIDER:SetValue(STAND_ROTATION_MAXVALUE)
-            DESYNCPLUS_ROTATION_SPEED:SetValue(STAND_ROTATION_CYCLESPEED)
-            DESYNCPLUS_ROTATION_TYPE:SetValue(STAND_ROTATION_TYPE)
+    if DESYNCPLUS_ROTATION_STATE:GetValue() ~= ROTATION_CURRENTSTATE then
+        ROTATION_CURRENTSTATE = DESYNCPLUS_ROTATION_STATE:GetValue()
+        if ROTATION_CURRENTSTATE == 0 then
+            DESYNCPLUS_ROTATION_MINSLIDER:SetValue(DESYNCPLUS_SETTINGS_STAND_ROTATION_MINVALUE:GetValue())
+            DESYNCPLUS_ROTATION_MAXSLIDER:SetValue(DESYNCPLUS_SETTINGS_STAND_ROTATION_MAXVALUE:GetValue())
+            DESYNCPLUS_ROTATION_SPEED:SetValue(DESYNCPLUS_SETTINGS_STAND_ROTATION_CYCLESPEED:GetValue())
+            DESYNCPLUS_ROTATION_TYPE:SetValue(DESYNCPLUS_SETTINGS_STAND_ROTATION_TYPE:GetValue())
         else
-            DESYNCPLUS_ROTATION_MINSLIDER:SetValue(MOVE_ROTATION_MINVALUE)
-            DESYNCPLUS_ROTATION_MAXSLIDER:SetValue(MOVE_ROTATION_MAXVALUE)
-            DESYNCPLUS_ROTATION_SPEED:SetValue(MOVE_ROTATION_CYCLESPEED)
-            DESYNCPLUS_ROTATION_TYPE:SetValue(MOVE_ROTATION_TYPE)
+            DESYNCPLUS_ROTATION_MINSLIDER:SetValue(DESYNCPLUS_SETTINGS_MOVE_ROTATION_MINVALUE:GetValue())
+            DESYNCPLUS_ROTATION_MAXSLIDER:SetValue(DESYNCPLUS_SETTINGS_MOVE_ROTATION_MAXVALUE:GetValue())
+            DESYNCPLUS_ROTATION_SPEED:SetValue(DESYNCPLUS_SETTINGS_MOVE_ROTATION_CYCLESPEED:GetValue())
+            DESYNCPLUS_ROTATION_TYPE:SetValue(DESYNCPLUS_SETTINGS_MOVE_ROTATION_TYPE:GetValue())
         end
     end
 
-    if DESYNCPLUS_LBY_STATE:GetValue() ~= LBY_STATE then
-        LBY_STATE = DESYNCPLUS_LBY_STATE:GetValue()
-        if LBY_STATE == 0 then
-            DESYNCPLUS_LBY_MINSLIDER:SetValue(STAND_LBY_MINVALUE)
-            DESYNCPLUS_LBY_MAXSLIDER:SetValue(STAND_LBY_MAXVALUE)
-            DESYNCPLUS_LBY_SPEED:SetValue(STAND_LBY_CYCLESPEED)
-            DESYNCPLUS_LBY_TYPE:SetValue(STAND_LBY_TYPE)
-            DESYNCPLUS_LBY_VALUE:SetValue(STAND_LBY_VALUE)
+    if DESYNCPLUS_LBY_STATE:GetValue() ~= LBY_CURRENTSTATE then   
+        LBY_CURRENTSTATE = DESYNCPLUS_LBY_STATE:GetValue()
+        if LBY_CURRENTSTATE == 0 then
+            DESYNCPLUS_LBY_MINSLIDER:SetValue(DESYNCPLUS_SETTINGS_STAND_LBY_MINVALUE:GetValue())
+            DESYNCPLUS_LBY_MAXSLIDER:SetValue(DESYNCPLUS_SETTINGS_STAND_LBY_MAXVALUE:GetValue())
+            DESYNCPLUS_LBY_SPEED:SetValue(DESYNCPLUS_SETTINGS_STAND_LBY_CYCLESPEED:GetValue())
+            DESYNCPLUS_LBY_TYPE:SetValue(DESYNCPLUS_SETTINGS_STAND_LBY_TYPE:GetValue())
+            DESYNCPLUS_LBY_VALUE:SetValue(DESYNCPLUS_SETTINGS_STAND_LBY_VALUE:GetValue())
         else
-            DESYNCPLUS_LBY_MINSLIDER:SetValue(MOVE_LBY_MINVALUE)
-            DESYNCPLUS_LBY_MAXSLIDER:SetValue(MOVE_LBY_MAXVALUE)
-            DESYNCPLUS_LBY_SPEED:SetValue(MOVE_LBY_CYCLESPEED)
-            DESYNCPLUS_LBY_TYPE:SetValue(MOVE_LBY_TYPE)
-            DESYNCPLUS_LBY_VALUE:SetValue(MOVE_LBY_VALUE)
+            DESYNCPLUS_LBY_MINSLIDER:SetValue(DESYNCPLUS_SETTINGS_MOVE_LBY_MINVALUE:GetValue())
+            DESYNCPLUS_LBY_MAXSLIDER:SetValue(DESYNCPLUS_SETTINGS_MOVE_LBY_MAXVALUE:GetValue())
+            DESYNCPLUS_LBY_SPEED:SetValue(DESYNCPLUS_SETTINGS_MOVE_LBY_CYCLESPEED:GetValue())
+            DESYNCPLUS_LBY_TYPE:SetValue(DESYNCPLUS_SETTINGS_MOVE_LBY_TYPE:GetValue())
+            DESYNCPLUS_LBY_VALUE:SetValue(DESYNCPLUS_SETTINGS_MOVE_LBY_VALUE:GetValue())
         end
     end
 
-    if BASEDIRECTION_STATE == 0 then
-        STAND_BASEDIRECTION_BASEVALUE = DESYNCPLUS_BASEDIRECTION_BASEVALUE:GetValue()
-        STAND_BASEDIRECTION_MAXVALUE = DESYNCPLUS_BASEDIRECTION_MAXSLIDER:GetValue()
-        STAND_BASEDIRECTION_MINVALUE = DESYNCPLUS_BASEDIRECTION_MINSLIDER:GetValue()
-        STAND_BASEDIRECTION_TYPE = DESYNCPLUS_BASEDIRECTION_TYPE:GetValue()
+    if BASEDIRECTION_CURRENTSTATE == 0 then
+        DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_BASEVALUE:SetValue(DESYNCPLUS_BASEDIRECTION_BASEVALUE:GetValue())
+        DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_MAXVALUE:SetValue(DESYNCPLUS_BASEDIRECTION_MAXSLIDER:GetValue())
+        DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_MINVALUE:SetValue(DESYNCPLUS_BASEDIRECTION_MINSLIDER:GetValue())
+        DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_TYPE:SetValue(DESYNCPLUS_BASEDIRECTION_TYPE:GetValue())
     else
-        MOVE_BASEDIRECTION_BASEVALUE = DESYNCPLUS_BASEDIRECTION_BASEVALUE:GetValue()
-        MOVE_BASEDIRECTION_MAXVALUE = DESYNCPLUS_BASEDIRECTION_MAXSLIDER:GetValue()
-        MOVE_BASEDIRECTION_MINVALUE = DESYNCPLUS_BASEDIRECTION_MINSLIDER:GetValue()
-        MOVE_BASEDIRECTION_TYPE = DESYNCPLUS_BASEDIRECTION_TYPE:GetValue()
+        DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_BASEVALUE:SetValue(DESYNCPLUS_BASEDIRECTION_BASEVALUE:GetValue())
+        DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_MAXVALUE:SetValue(DESYNCPLUS_BASEDIRECTION_MAXSLIDER:GetValue())
+        DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_MINVALUE:SetValue(DESYNCPLUS_BASEDIRECTION_MINSLIDER:GetValue())
+        DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_TYPE:SetValue(DESYNCPLUS_BASEDIRECTION_TYPE:GetValue())
     end
 
-    if ROTATION_STATE == 0 then
-        STAND_ROTATION_MINVALUE = DESYNCPLUS_ROTATION_MINSLIDER:GetValue()
-        STAND_ROTATION_MAXVALUE = DESYNCPLUS_ROTATION_MAXSLIDER:GetValue()
-        STAND_ROTATION_CYCLESPEED = DESYNCPLUS_ROTATION_SPEED:GetValue()
-        STAND_ROTATION_TYPE = DESYNCPLUS_ROTATION_TYPE:GetValue()
+    if ROTATION_CURRENTSTATE == 0 then
+        DESYNCPLUS_SETTINGS_STAND_ROTATION_MINVALUE:SetValue(DESYNCPLUS_ROTATION_MINSLIDER:GetValue())
+        DESYNCPLUS_SETTINGS_STAND_ROTATION_MAXVALUE:SetValue(DESYNCPLUS_ROTATION_MAXSLIDER:GetValue())
+        DESYNCPLUS_SETTINGS_STAND_ROTATION_CYCLESPEED:SetValue(DESYNCPLUS_ROTATION_SPEED:GetValue())
+        DESYNCPLUS_SETTINGS_STAND_ROTATION_TYPE:SetValue(DESYNCPLUS_ROTATION_TYPE:GetValue())
     else
-        MOVE_ROTATION_MINVALUE = DESYNCPLUS_ROTATION_MINSLIDER:GetValue()
-        MOVE_ROTATION_MAXVALUE = DESYNCPLUS_ROTATION_MAXSLIDER:GetValue()
-        MOVE_ROTATION_CYCLESPEED = DESYNCPLUS_ROTATION_SPEED:GetValue()
-        MOVE_ROTATION_TYPE = DESYNCPLUS_ROTATION_TYPE:GetValue()
+        DESYNCPLUS_SETTINGS_MOVE_ROTATION_MINVALUE:SetValue(DESYNCPLUS_ROTATION_MINSLIDER:GetValue())
+        DESYNCPLUS_SETTINGS_MOVE_ROTATION_MAXVALUE:SetValue(DESYNCPLUS_ROTATION_MAXSLIDER:GetValue())
+        DESYNCPLUS_SETTINGS_MOVE_ROTATION_CYCLESPEED:SetValue(DESYNCPLUS_ROTATION_SPEED:GetValue())
+        DESYNCPLUS_SETTINGS_MOVE_ROTATION_TYPE:SetValue(DESYNCPLUS_ROTATION_TYPE:GetValue())
     end
 
-    if LBY_STATE == 0 then
-        STAND_LBY_MINVALUE = DESYNCPLUS_LBY_MINSLIDER:GetValue()
-        STAND_LBY_MAXVALUE = DESYNCPLUS_LBY_MAXSLIDER:GetValue()
-        STAND_LBY_CYCLESPEED = DESYNCPLUS_LBY_SPEED:GetValue()
-        STAND_LBY_TYPE = DESYNCPLUS_LBY_TYPE:GetValue()
-        STAND_LBY_VALUE = DESYNCPLUS_LBY_VALUE:GetValue()
+    if LBY_CURRENTSTATE == 0 then
+        DESYNCPLUS_SETTINGS_STAND_LBY_MINVALUE:SetValue(DESYNCPLUS_LBY_MINSLIDER:GetValue())
+        DESYNCPLUS_SETTINGS_STAND_LBY_MAXVALUE:SetValue(DESYNCPLUS_LBY_MAXSLIDER:GetValue())
+        DESYNCPLUS_SETTINGS_STAND_LBY_CYCLESPEED:SetValue(DESYNCPLUS_LBY_SPEED:GetValue())
+        DESYNCPLUS_SETTINGS_STAND_LBY_TYPE:SetValue(DESYNCPLUS_LBY_TYPE:GetValue())
+        DESYNCPLUS_SETTINGS_STAND_LBY_VALUE:SetValue(DESYNCPLUS_LBY_VALUE:GetValue())
     else
-        MOVE_LBY_MINVALUE = DESYNCPLUS_LBY_MINSLIDER:GetValue()
-        MOVE_LBY_MAXVALUE = DESYNCPLUS_LBY_MAXSLIDER:GetValue()
-        MOVE_LBY_CYCLESPEED = DESYNCPLUS_LBY_SPEED:GetValue()
-        MOVE_LBY_TYPE = DESYNCPLUS_LBY_TYPE:GetValue()
-        MOVE_LBY_VALUE = DESYNCPLUS_LBY_VALUE:GetValue()
+        DESYNCPLUS_SETTINGS_MOVE_LBY_MINVALUE:SetValue(DESYNCPLUS_LBY_MINSLIDER:GetValue())
+        DESYNCPLUS_SETTINGS_MOVE_LBY_MAXVALUE:SetValue(DESYNCPLUS_LBY_MAXSLIDER:GetValue())
+        DESYNCPLUS_SETTINGS_MOVE_LBY_CYCLESPEED:SetValue(DESYNCPLUS_LBY_SPEED:GetValue())
+        DESYNCPLUS_SETTINGS_MOVE_LBY_TYPE:SetValue(DESYNCPLUS_LBY_TYPE:GetValue())
+        DESYNCPLUS_SETTINGS_MOVE_LBY_VALUE:SetValue(DESYNCPLUS_LBY_VALUE:GetValue())
     end
 
     if DESYNCPLUS_MISC_MASTERSWITCH:GetValue() then
@@ -352,6 +415,7 @@ local function main()
                     SetBaseDirection(false)
                 end
             end
+            SetSlowWalk()
             SetFakelag()         
         end
     end
