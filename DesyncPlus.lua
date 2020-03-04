@@ -234,10 +234,10 @@ local function SetBaseDirection(isMoving)
 end
 
 local function SetFakelag()
-    fakelagType = DESYNCPLUS_SETTINGS_FAKELAG_TYPE:GetValue()
-    minValue = DESYNCPLUS_SETTINGS_FAKELAG_MINVALUE:GetValue()
-    maxValue = DESYNCPLUS_SETTINGS_FAKELAG_MAXVALUE:GetValue()
-    speed = DESYNCPLUS_SETTINGS_FAKELAG_CYCLESPEED:GetValue()
+    fakelagType = DESYNCPLUS_FAKELAG_TYPE:GetValue()
+    minValue = DESYNCPLUS_FAKELAG_MINSLIDER:GetValue()
+    maxValue = DESYNCPLUS_FAKELAG_MAXSLIDER:GetValue()
+    speed = DESYNCPLUS_FAKELAG_SPEED:GetValue() / 3
 
     if fakelagType ~= 0 then
         if fakelagType == 1 then
@@ -258,13 +258,13 @@ local function SetFakelag()
 end
 
 local function SetSlowWalk()
-    slowwalkType = DESYNCPLUS_SETTINGS_SLOWWALK_TYPE:GetValue()
-    minValue = DESYNCPLUS_SETTINGS_SLOWWALK_MINVALUE:GetValue()
-    maxValue = DESYNCPLUS_SETTINGS_SLOWWALK_MAXVALUE:GetValue()
-    speed = DESYNCPLUS_SETTINGS_SLOWWALK_CYCLESPEED:GetValue()
+    slowwalkType = DESYNCPLUS_SLOWWALK_TYPE:GetValue()
+    minValue = DESYNCPLUS_SLOWWALK_MINSLIDER:GetValue()
+    maxValue = DESYNCPLUS_SLOWWALK_MAXSLIDER:GetValue()
+    speed = DESYNCPLUS_SLOWWALK_SPEED:GetValue()
     if slowwalkType ~= 0 then
         if slowwalkType == 1 then
-            gui.SetValue("rbot.accuracy.movement.slowspeed", minValue, maxValue)
+            gui.SetValue("rbot.accuracy.movement.slowspeed", math.random(minValue, maxValue))
         elseif slowwalkType == 2 then
             if angle4 >= maxValue then direction4 = 1 elseif angle4 <= minValue + speed then direction4 = 0 end       
             if direction4 == 0 then angle4 = angle4 + speed elseif direction4 == 1 then angle4 = angle4 - speed end     

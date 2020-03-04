@@ -1,3 +1,8 @@
+Version 1.1.1
+---------------
+- Fixed Slow Walk Customizer
+- Fixed Fake Lag Customizer
+
 Version 1.1
 ---------------
 - Moved Manaul AA to Ragebot -> Anti-Aim -> Manual Anti-Aim
