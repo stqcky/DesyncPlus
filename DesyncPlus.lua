@@ -1,7 +1,7 @@
 -- Desync Plus 
 -- Made by stacky
 
-local CURRENTVERSION = "1.2"
+local CURRENTVERSION = "1.3"
 local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
 
 local function Update() 
@@ -54,7 +54,7 @@ local DESYNCPLUS_SETTINGS_FAKELAG_CYCLESPEED = gui.Slider(DESYNCPLUS_SETTINGSWIN
 local DESYNCPLUS_SETTINGS_FAKELAG_TYPE = gui.Combobox(DESYNCPLUS_SETTINGSWINDOW, "fakelag.type", "Type", "Off", "Jitter", "Cycle", "Static")
 
 local DESYNCPLUS_SETTINGS_MASTERSWITCH = gui.Checkbox(DESYNCPLUS_SETTINGSWINDOW, "misc.masterswitch", "", false)
-local DESYNCPLUS_SETTINGS_FAKELAGSTAND = gui.Checkbox(DESYNCPLUS_SETTINGSWINDOW, "mist.fakelagstand", "", false)
+local DESYNCPLUS_SETTINGS_FAKELAGSTAND = gui.Checkbox(DESYNCPLUS_SETTINGSWINDOW, "misc.fakelagstand", "", false)
 
 local windowName = "Desync Plus"
 if CURRENTVERSION ~= LATESTVERSION then
@@ -91,8 +91,7 @@ local DESYNCPLUS_LBY_VALUE = gui.Slider(DESYNCPLUS_LBY_GBOX,"lby.value", "LBY Va
 
 local DESYNCPLUS_MISC_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Misc", 530, 312, 250, 0)
 local DESYNCPLUS_MISC_MASTERSWITCH = gui.Checkbox(DESYNCPLUS_MISC_GBOX, "misc.masterswitch", "Master Switch", false)
-local DESYNCPLUS_MISC_LOADCFG = gui.Button(DESYNCPLUS_MISC_GBOX, "misc.loadcfg", "Load CFG", false)
-local DESYNCPLUS_MISC_SAVECFG = gui.Button(DESYNCPLUS_MISC_GBOX, "misc.savecfg", "Save CFG", false)
+local DESYNCPLUS_MISC_INVERTKEY = gui.Keybox(DESYNCPLUS_MISC_GBOX, "misc.invertkey", "Invert Key", 0)
 
 local DESYNCPLUS_SLOWWALK_GBOX =  gui.Groupbox(DESYNCPLUS_WINDOW, "Slow Walk", 10, 320, 250, 0)
 local DESYNCPLUS_SLOWWALK_MINSLIDER = gui.Slider(DESYNCPLUS_SLOWWALK_GBOX,"slowwalk.minslider", "Minimal Value", 0, 1, 100)
@@ -127,6 +126,7 @@ local DESYNCPLUS_EXTRA_TOGGLEWINDOW = gui.Button(DESYNCPLUS_EXTRA_GBOX, "Toggle 
 local BASEDIRECTION_STATE = 0
 local ROTATION_STATE = 0
 
+local invert = 1
 local angle, direction = 0, 0
 local angle2, direction2 = 0, 0
 local angle3, direction3 = 0, 0
@@ -145,16 +145,16 @@ local function SetLBY()
 
         if lbyType == 1 then
             RandomValue = math.random(minValue, maxValue)
-            gui.SetValue("rbot.antiaim.base.lby", RandomValue)
+            gui.SetValue("rbot.antiaim.base.lby", RandomValue * invert)
         elseif lbyType == 2 then
             if angle2 >= maxValue then direction2 = 1 elseif angle2 <= minValue + speed then direction2 = 0 end       
             if direction2 == 0 then angle2 = angle2 + speed elseif direction2 == 1 then angle2 = angle2 - speed end            
-            gui.SetValue("rbot.antiaim.base.lby", angle2)   
+            gui.SetValue("rbot.antiaim.base.lby", angle2 * invert)   
         elseif lbyType == 3 then
             curValue = gui.GetValue("rbot.antiaim.base.lby")
-            if curValue == maxValue then gui.SetValue("rbot.antiaim.base.lby", minValue)
-            elseif curValue == minValue then gui.SetValue("rbot.antiaim.base.lby", maxValue)
-            else gui.SetValue("rbot.antiaim.base.lby", minValue) end      
+            if curValue == maxValue then gui.SetValue("rbot.antiaim.base.lby", minValue * invert)
+            elseif curValue == minValue then gui.SetValue("rbot.antiaim.base.lby", maxValue * invert)
+            else gui.SetValue("rbot.antiaim.base.lby", minValue * invert) end      
         elseif lbyType == 4 then
             if gui.GetValue("rbot.antiaim.base.rotation") >= 0 then
                     gui.SetValue("rbot.antiaim.base.lby", value)
@@ -168,7 +168,7 @@ local function SetLBY()
                 gui.SetValue("rbot.antiaim.base.lby", value)
             end
         elseif lbyType == 6 then
-            gui.SetValue("rbot.antiaim.base.lby", minValue)
+            gui.SetValue("rbot.antiaim.base.lby", minValue * invert)
         end
     end
 
@@ -199,24 +199,19 @@ local function SetRotation(state)
         end
 
         if rotationType == 1 then
-            gui.SetValue("rbot.antiaim.base.rotation", math.random(minValue, maxValue))    
+            gui.SetValue("rbot.antiaim.base.rotation", math.random(minValue, maxValue) * invert)    
         elseif rotationType == 2 then
             if angle >= maxValue then direction = 1 elseif angle <= minValue + speed then direction = 0 end       
             if direction == 0 then angle = angle + speed elseif direction == 1 then angle = angle - speed end      
-            gui.SetValue("rbot.antiaim.base.rotation", angle)   
+            gui.SetValue("rbot.antiaim.base.rotation", angle * invert)   
         elseif rotationType == 3 then 
             currentValue = gui.GetValue("rbot.antiaim.base.rotation")
-            if currentValue == minValue then gui.SetValue("rbot.antiaim.base.rotation", maxValue)
-            elseif currentValue == maxValue then gui.SetValue("rbot.antiaim.base.rotation", minValue)
-            else gui.SetValue("rbot.antiaim.base.rotation", maxValue) end          
+            if currentValue == minValue then gui.SetValue("rbot.antiaim.base.rotation", maxValue * invert)
+            elseif currentValue == maxValue then gui.SetValue("rbot.antiaim.base.rotation", minValue * invert)
+            else gui.SetValue("rbot.antiaim.base.rotation", maxValue * invert) end          
         elseif rotationType == 4 then
-            gui.SetValue("rbot.antiaim.base.rotation", minValue)   
+            gui.SetValue("rbot.antiaim.base.rotation", minValue * invert)   
         end              
-    end
-end
-
-local function checkForBufferOverflow()
-    if globals.TickCount() > lastTick + 1 then
     end
 end
 
@@ -249,13 +244,7 @@ local function SetBaseDirection(state)
             if baseValue + RandomRange > 180 or baseValue + RandomRange < -180 then baseValue = baseValue * -1 end
             gui.SetValue("rbot.antiaim.base", baseValue + RandomRange)
         elseif BaseDirectionType == 2 then   
-            if globals.TickCount() - lastTick > 10 then
-                angle = 0
-                for w in gui.GetValue("rbot.antiaim.base"):gmatch("%S+") do angle = tonumber(w); break end
-                if angle == maxValue then gui.SetValue("rbot.antiaim.base", minValue)
-                elseif angle == minValue then gui.SetValue("rbot.antiaim.base", maxValue)
-                else gui.SetValue("rbot.antiaim.base", minValue) end 
-            end
+            --aaaaaaaaaaaaaaaaaaaaa
         elseif BaseDirectionType == 3 then
             gui.SetValue("rbot.antiaim.base", baseValue)
         end
@@ -423,6 +412,13 @@ local function main()
             SetFakelag()         
         end
     end
+
+    if DESYNCPLUS_MISC_INVERTKEY:GetValue() ~= 0 then
+        if input.IsButtonPressed(DESYNCPLUS_MISC_INVERTKEY:GetValue()) then
+            invert = invert * -1
+        end
+    end
+
     if input.IsButtonPressed(45) then 
         if windowOpened then DESYNCPLUS_WINDOW:SetActive(0) else DESYNCPLUS_WINDOW:SetActive(1) end 
         windowOpened = not windowOpened
