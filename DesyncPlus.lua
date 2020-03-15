@@ -1,7 +1,7 @@
 -- Desync Plus 
 -- Made by stacky
 
-local CURRENTVERSION = "1.3"
+local CURRENTVERSION = "1.3.1"
 local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
 
 local function Update() 
@@ -152,20 +152,20 @@ local function SetLBY()
             gui.SetValue("rbot.antiaim.base.lby", angle2 * invert)   
         elseif lbyType == 3 then
             curValue = gui.GetValue("rbot.antiaim.base.lby")
-            if curValue == maxValue then gui.SetValue("rbot.antiaim.base.lby", minValue * invert)
-            elseif curValue == minValue then gui.SetValue("rbot.antiaim.base.lby", maxValue * invert)
+            if curValue == maxValue * invert then gui.SetValue("rbot.antiaim.base.lby", minValue * invert)
+            elseif curValue == minValue * invert then gui.SetValue("rbot.antiaim.base.lby", maxValue * invert)
             else gui.SetValue("rbot.antiaim.base.lby", minValue * invert) end      
         elseif lbyType == 4 then
             if gui.GetValue("rbot.antiaim.base.rotation") >= 0 then
-                    gui.SetValue("rbot.antiaim.base.lby", value)
+                    gui.SetValue("rbot.antiaim.base.lby", value * invert)
             else
-                    gui.SetValue("rbot.antiaim.base.lby", value * -1)
+                    gui.SetValue("rbot.antiaim.base.lby", value * -1 * invert)
             end
         elseif lbyType == 5 then
             if gui.GetValue("rbot.antiaim.base.rotation") >= 0 then
-                gui.SetValue("rbot.antiaim.base.lby", value * -1)
+                gui.SetValue("rbot.antiaim.base.lby", value * -1 * invert)
             else
-                gui.SetValue("rbot.antiaim.base.lby", value)
+                gui.SetValue("rbot.antiaim.base.lby", value * invert)
             end
         elseif lbyType == 6 then
             gui.SetValue("rbot.antiaim.base.lby", minValue * invert)
@@ -206,8 +206,8 @@ local function SetRotation(state)
             gui.SetValue("rbot.antiaim.base.rotation", angle * invert)   
         elseif rotationType == 3 then 
             currentValue = gui.GetValue("rbot.antiaim.base.rotation")
-            if currentValue == minValue then gui.SetValue("rbot.antiaim.base.rotation", maxValue * invert)
-            elseif currentValue == maxValue then gui.SetValue("rbot.antiaim.base.rotation", minValue * invert)
+            if currentValue == minValue * invert then gui.SetValue("rbot.antiaim.base.rotation", maxValue * invert)
+            elseif currentValue == maxValue * invert then gui.SetValue("rbot.antiaim.base.rotation", minValue * invert)
             else gui.SetValue("rbot.antiaim.base.rotation", maxValue * invert) end          
         elseif rotationType == 4 then
             gui.SetValue("rbot.antiaim.base.rotation", minValue * invert)   
