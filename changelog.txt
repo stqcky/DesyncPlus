@@ -1,3 +1,9 @@
+Version 1.3.2
+---------------
+- Fixed Window not closing in some cases
+- Fixed some erros that spam the console
+- Added an Invert Indicator
+
 Version 1.3.1
 ---------------
 - Fixed Inverter not working with Opposite, Match and Switch types

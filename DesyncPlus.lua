@@ -1,7 +1,7 @@
 -- Desync Plus 
 -- Made by stacky
 
-local CURRENTVERSION = "1.3.1"
+local CURRENTVERSION = "1.3.2"
 local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
 
 local function Update() 
@@ -57,11 +57,12 @@ local DESYNCPLUS_SETTINGS_MASTERSWITCH = gui.Checkbox(DESYNCPLUS_SETTINGSWINDOW,
 local DESYNCPLUS_SETTINGS_FAKELAGSTAND = gui.Checkbox(DESYNCPLUS_SETTINGSWINDOW, "misc.fakelagstand", "", false)
 
 local windowName = "Desync Plus"
-if CURRENTVERSION ~= LATESTVERSION then
+if CURRENTVERSION ~= LATESTVERSION and LATESTVERSION ~= nil then
     windowName = windowName .. " (Update Available)"
 end
 
 local DESYNCPLUS_WINDOW = gui.Window("desyncplus", windowName, 100, 100, 790, 610)
+DESYNCPLUS_WINDOW:SetOpenKey(45)
 
 local DESYNCPLUS_GBOX = gui.Groupbox(gui.Reference("Ragebot", "Anti-Aim"), "Manual Anti-Aim", 15, 650, 300, 0)
 local DESYNCPLUS_MANUAL_LEFT = gui.Keybox(DESYNCPLUS_GBOX, "desyncplus.manual.left", "Left Button", 0)
@@ -92,6 +93,7 @@ local DESYNCPLUS_LBY_VALUE = gui.Slider(DESYNCPLUS_LBY_GBOX,"lby.value", "LBY Va
 local DESYNCPLUS_MISC_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Misc", 530, 312, 250, 0)
 local DESYNCPLUS_MISC_MASTERSWITCH = gui.Checkbox(DESYNCPLUS_MISC_GBOX, "misc.masterswitch", "Master Switch", false)
 local DESYNCPLUS_MISC_INVERTKEY = gui.Keybox(DESYNCPLUS_MISC_GBOX, "misc.invertkey", "Invert Key", 0)
+local DESYNCPLUS_MISC_INVERTINDICATOR = gui.Checkbox( DESYNCPLUS_MISC_GBOX, "misc.invertindicator", "Invert Indicator", false )
 
 local DESYNCPLUS_SLOWWALK_GBOX =  gui.Groupbox(DESYNCPLUS_WINDOW, "Slow Walk", 10, 320, 250, 0)
 local DESYNCPLUS_SLOWWALK_MINSLIDER = gui.Slider(DESYNCPLUS_SLOWWALK_GBOX,"slowwalk.minslider", "Minimal Value", 0, 1, 100)
@@ -109,22 +111,21 @@ local DESYNCPLUS_TAB = gui.Tab(gui.Reference("Settings"), "desyncplus.tab", "Des
 
 local DESYNCPLUS_UPDATER_GBOX = gui.Groupbox(DESYNCPLUS_TAB, "Updater", 10, 10, 250, 0)
 local DESYNCPLUS_UPDATER_CURRENTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Current version: v" .. CURRENTVERSION)
-local DESYNCPLUS_UPDATER_LATESTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Latest version: v" .. LATESTVERSION)
+local DESYNCPLUS_UPDATER_LATESTVERSION = gui.Text(DESYNCPLUS_UPDATER_GBOX, "Latest version: v")
+if LATESTVERSION ~= nil then
+    DESYNCPLUS_UPDATER_LATESTVERSION:SetText("Latest version: v" .. LATESTVERSION)
+else
+    DESYNCPLUS_UPDATER_LATESTVERSION:SetText("Latest version: Error, try reloading the script")
+end
 local DESYNCPLUS_UPDATER_UPDATE = gui.Button(DESYNCPLUS_UPDATER_GBOX, "Update", Update)
 
 local DESYNCPLUS_UPDATER_CHANGELOG_GBOX = gui.Groupbox(DESYNCPLUS_TAB, "Changelog", 270, 10, 360, 0)
 local DESYNCPLUS_UPDATER_CHANGELOG_TEXT = gui.Text(DESYNCPLUS_UPDATER_CHANGELOG_GBOX, http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/changelog.txt"))
 
-local function toggleWindow()
-    if DESYNCPLUS_WINDOW:IsActive() then DESYNCPLUS_WINDOW:SetActive(0)
-    else DESYNCPLUS_WINDOW:SetActive(1) end
-end
-
-local DESYNCPLUS_EXTRA_GBOX = gui.Groupbox(DESYNCPLUS_TAB, "Extra", 10, 175, 250, 0)
-local DESYNCPLUS_EXTRA_TOGGLEWINDOW = gui.Button(DESYNCPLUS_EXTRA_GBOX, "Toggle Window", toggleWindow)
-
 local BASEDIRECTION_STATE = 0
 local ROTATION_STATE = 0
+
+local FONT = draw.CreateFont("Verdana", 30, 2000)
 
 local invert = 1
 local angle, direction = 0, 0
@@ -390,9 +391,9 @@ local function main()
     if DESYNCPLUS_MISC_MASTERSWITCH:GetValue() then
         ManualAA()
         if globals.TickCount() > lastTick then 
-            localPlayer = entities.GetLocalPlayer()
-            local onground = bit.band(localPlayer:GetPropInt("m_fFlags"), 1) ~= 0
+            localPlayer = entities.GetLocalPlayer()          
             if localPlayer then 
+                local onground = bit.band(localPlayer:GetPropInt("m_fFlags"), 1) ~= 0
                 SetLBY()
                 if not onground then
                     SetRotation("Air")
@@ -407,22 +408,29 @@ local function main()
                         SetBaseDirection("Standing")
                     end
                 end
-        end
+            end
             SetSlowWalk()
             SetFakelag()         
         end
-    end
-
-    if DESYNCPLUS_MISC_INVERTKEY:GetValue() ~= 0 then
-        if input.IsButtonPressed(DESYNCPLUS_MISC_INVERTKEY:GetValue()) then
-            invert = invert * -1
+        if DESYNCPLUS_MISC_INVERTKEY:GetValue() ~= 0 then
+            if input.IsButtonPressed(DESYNCPLUS_MISC_INVERTKEY:GetValue()) then
+                invert = invert * -1
+            end
+        end
+    
+        if DESYNCPLUS_MISC_INVERTINDICATOR:GetValue() and entities.GetLocalPlayer() then
+            local screenW, screenH = draw.GetScreenSize()
+            if invert == 1 then
+                draw.Color(255, 25, 25)
+            else
+                draw.Color(124, 176, 34)
+            end
+            draw.SetFont(FONT)
+            draw.TextShadow(10, screenH - 90, "INVERT" )
         end
     end
 
-    if input.IsButtonPressed(45) then 
-        if windowOpened then DESYNCPLUS_WINDOW:SetActive(0) else DESYNCPLUS_WINDOW:SetActive(1) end 
-        windowOpened = not windowOpened
-    end
+    DESYNCPLUS_WINDOW:SetActive(gui.Reference("Menu"):IsActive())
     lastTick = globals.TickCount()
 end
 callbacks.Register("Draw", main)
