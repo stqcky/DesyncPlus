@@ -1,7 +1,7 @@
 -- Desync Plus 
 -- Made by stacky
 
-local CURRENTVERSION = "1.3.2"
+local CURRENTVERSION = "1.3.3"
 local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
 
 local function Update() 
@@ -43,19 +43,6 @@ local DESYNCPLUS_SETTINGS_AIR_ROTATION_MAXVALUE = gui.Slider(DESYNCPLUS_SETTINGS
 local DESYNCPLUS_SETTINGS_AIR_ROTATION_CYCLESPEED = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "rotation.air.cyclespeed", "", 1, 1, 30)
 local DESYNCPLUS_SETTINGS_AIR_ROTATION_TYPE = gui.Combobox(DESYNCPLUS_SETTINGSWINDOW, "rotation.air.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Static")
 
-local DESYNCPLUS_SETTINGS_SLOWWALK_MINVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "slowwalk.minvalue", "", 0, -58, 58)
-local DESYNCPLUS_SETTINGS_SLOWWALK_MAXVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "slowwalk.maxvalue", "", 0, -58, 58)
-local DESYNCPLUS_SETTINGS_SLOWWALK_CYCLESPEED = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "slowwalk.cyclespeed", "", 1, 1, 30)
-local DESYNCPLUS_SETTINGS_SLOWWALK_TYPE = gui.Combobox(DESYNCPLUS_SETTINGSWINDOW, "slowwalk.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Static")
-
-local DESYNCPLUS_SETTINGS_FAKELAG_MINVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "fakelag.minvalue", "", 0, -58, 58)
-local DESYNCPLUS_SETTINGS_FAKELAG_MAXVALUE = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "fakelag.maxvalue", "", 0, -58, 58)
-local DESYNCPLUS_SETTINGS_FAKELAG_CYCLESPEED = gui.Slider(DESYNCPLUS_SETTINGSWINDOW, "fakelag.cyclespeed", "", 1, 1, 30)
-local DESYNCPLUS_SETTINGS_FAKELAG_TYPE = gui.Combobox(DESYNCPLUS_SETTINGSWINDOW, "fakelag.type", "Type", "Off", "Jitter", "Cycle", "Static")
-
-local DESYNCPLUS_SETTINGS_MASTERSWITCH = gui.Checkbox(DESYNCPLUS_SETTINGSWINDOW, "misc.masterswitch", "", false)
-local DESYNCPLUS_SETTINGS_FAKELAGSTAND = gui.Checkbox(DESYNCPLUS_SETTINGSWINDOW, "misc.fakelagstand", "", false)
-
 local windowName = "Desync Plus"
 if CURRENTVERSION ~= LATESTVERSION and LATESTVERSION ~= nil then
     windowName = windowName .. " (Update Available)"
@@ -93,7 +80,11 @@ local DESYNCPLUS_LBY_VALUE = gui.Slider(DESYNCPLUS_LBY_GBOX,"lby.value", "LBY Va
 local DESYNCPLUS_MISC_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Misc", 530, 312, 250, 0)
 local DESYNCPLUS_MISC_MASTERSWITCH = gui.Checkbox(DESYNCPLUS_MISC_GBOX, "misc.masterswitch", "Master Switch", false)
 local DESYNCPLUS_MISC_INVERTKEY = gui.Keybox(DESYNCPLUS_MISC_GBOX, "misc.invertkey", "Invert Key", 0)
-local DESYNCPLUS_MISC_INVERTINDICATOR = gui.Checkbox( DESYNCPLUS_MISC_GBOX, "misc.invertindicator", "Invert Indicator", false )
+local DESYNCPLUS_MISC_INVERTSETTINGS = gui.Multibox(DESYNCPLUS_MISC_GBOX, "Invert Settings")
+local DESYNCPLUS_MISC_INVERTINDICATOR = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertindicator", "Indicator", false)
+local DESYNCPLUS_MISC_INVERTBASEDIR = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertbasedir", "Invert Base Direction", false)
+local DESYNCPLUS_MISC_INVERTROTATION = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertrotation", "Invert Rotation", false)
+local DESYNCPLUS_MISC_INVERTLBY = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertlby", "Invert LBY", false)
 
 local DESYNCPLUS_SLOWWALK_GBOX =  gui.Groupbox(DESYNCPLUS_WINDOW, "Slow Walk", 10, 320, 250, 0)
 local DESYNCPLUS_SLOWWALK_MINSLIDER = gui.Slider(DESYNCPLUS_SLOWWALK_GBOX,"slowwalk.minslider", "Minimal Value", 0, 1, 100)
@@ -144,32 +135,38 @@ local function SetLBY()
         speed = DESYNCPLUS_LBY_SPEED:GetValue()
         value = DESYNCPLUS_LBY_VALUE:GetValue()
 
+        if DESYNCPLUS_MISC_INVERTLBY:GetValue() then
+            linvert = invert
+        else
+            linvert = 1
+        end
+
         if lbyType == 1 then
             RandomValue = math.random(minValue, maxValue)
-            gui.SetValue("rbot.antiaim.base.lby", RandomValue * invert)
+            gui.SetValue("rbot.antiaim.base.lby", RandomValue * linvert)
         elseif lbyType == 2 then
             if angle2 >= maxValue then direction2 = 1 elseif angle2 <= minValue + speed then direction2 = 0 end       
             if direction2 == 0 then angle2 = angle2 + speed elseif direction2 == 1 then angle2 = angle2 - speed end            
-            gui.SetValue("rbot.antiaim.base.lby", angle2 * invert)   
+            gui.SetValue("rbot.antiaim.base.lby", angle2 * linvert)   
         elseif lbyType == 3 then
             curValue = gui.GetValue("rbot.antiaim.base.lby")
-            if curValue == maxValue * invert then gui.SetValue("rbot.antiaim.base.lby", minValue * invert)
-            elseif curValue == minValue * invert then gui.SetValue("rbot.antiaim.base.lby", maxValue * invert)
-            else gui.SetValue("rbot.antiaim.base.lby", minValue * invert) end      
+            if curValue == maxValue * linvert then gui.SetValue("rbot.antiaim.base.lby", minValue * linvert)
+            elseif curValue == minValue * linvert then gui.SetValue("rbot.antiaim.base.lby", maxValue * linvert)
+            else gui.SetValue("rbot.antiaim.base.lby", minValue * linvert) end      
         elseif lbyType == 4 then
             if gui.GetValue("rbot.antiaim.base.rotation") >= 0 then
-                    gui.SetValue("rbot.antiaim.base.lby", value * invert)
+                    gui.SetValue("rbot.antiaim.base.lby", value * linvert)
             else
-                    gui.SetValue("rbot.antiaim.base.lby", value * -1 * invert)
+                    gui.SetValue("rbot.antiaim.base.lby", value * -1 * linvert)
             end
         elseif lbyType == 5 then
             if gui.GetValue("rbot.antiaim.base.rotation") >= 0 then
-                gui.SetValue("rbot.antiaim.base.lby", value * -1 * invert)
+                gui.SetValue("rbot.antiaim.base.lby", value * -1 * linvert)
             else
-                gui.SetValue("rbot.antiaim.base.lby", value * invert)
+                gui.SetValue("rbot.antiaim.base.lby", value * linvert)
             end
         elseif lbyType == 6 then
-            gui.SetValue("rbot.antiaim.base.lby", minValue * invert)
+            gui.SetValue("rbot.antiaim.base.lby", minValue * linvert)
         end
     end
 
@@ -182,6 +179,12 @@ local function SetRotation(state)
         rotationType = DESYNCPLUS_SETTINGS_STAND_ROTATION_TYPE:GetValue() 
     else
         rotationType = DESYNCPLUS_SETTINGS_AIR_ROTATION_TYPE:GetValue() 
+    end
+
+    if DESYNCPLUS_MISC_INVERTROTATION:GetValue() then
+        rinvert = invert
+    else
+        rinvert = 1
     end
 
     if rotationType ~= 0 then  
@@ -200,18 +203,18 @@ local function SetRotation(state)
         end
 
         if rotationType == 1 then
-            gui.SetValue("rbot.antiaim.base.rotation", math.random(minValue, maxValue) * invert)    
+            gui.SetValue("rbot.antiaim.base.rotation", math.random(minValue, maxValue) * rinvert)    
         elseif rotationType == 2 then
             if angle >= maxValue then direction = 1 elseif angle <= minValue + speed then direction = 0 end       
             if direction == 0 then angle = angle + speed elseif direction == 1 then angle = angle - speed end      
-            gui.SetValue("rbot.antiaim.base.rotation", angle * invert)   
+            gui.SetValue("rbot.antiaim.base.rotation", angle * rinvert)   
         elseif rotationType == 3 then 
             currentValue = gui.GetValue("rbot.antiaim.base.rotation")
-            if currentValue == minValue * invert then gui.SetValue("rbot.antiaim.base.rotation", maxValue * invert)
-            elseif currentValue == maxValue * invert then gui.SetValue("rbot.antiaim.base.rotation", minValue * invert)
-            else gui.SetValue("rbot.antiaim.base.rotation", maxValue * invert) end          
+            if currentValue == minValue * rinvert then gui.SetValue("rbot.antiaim.base.rotation", maxValue * rinvert)
+            elseif currentValue == maxValue * rinvert then gui.SetValue("rbot.antiaim.base.rotation", minValue * rinvert)
+            else gui.SetValue("rbot.antiaim.base.rotation", maxValue * rinvert) end          
         elseif rotationType == 4 then
-            gui.SetValue("rbot.antiaim.base.rotation", minValue * invert)   
+            gui.SetValue("rbot.antiaim.base.rotation", minValue * rinvert)   
         end              
     end
 end
@@ -223,6 +226,12 @@ local function SetBaseDirection(state)
         BaseDirectionType = DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_TYPE:GetValue() 
     else
         BaseDirectionType = DESYNCPLUS_SETTINGS_AIR_BASEDIRECTION_TYPE:GetValue() 
+    end
+
+    if DESYNCPLUS_MISC_INVERTBASEDIR:GetValue() then
+        binvert = invert
+    else
+        binvert = 1
     end
 
     if BaseDirectionType ~= 0 then          
@@ -243,11 +252,11 @@ local function SetBaseDirection(state)
         if BaseDirectionType == 1 then
             RandomRange = math.random(minValue, maxValue)       
             if baseValue + RandomRange > 180 or baseValue + RandomRange < -180 then baseValue = baseValue * -1 end
-            gui.SetValue("rbot.antiaim.base", baseValue + RandomRange)
+            gui.SetValue("rbot.antiaim.base", (baseValue + RandomRange) * binvert)
         elseif BaseDirectionType == 2 then   
             --aaaaaaaaaaaaaaaaaaaaa
         elseif BaseDirectionType == 3 then
-            gui.SetValue("rbot.antiaim.base", baseValue)
+            gui.SetValue("rbot.antiaim.base", baseValue * binvert)
         end
     end
 end
@@ -392,7 +401,7 @@ local function main()
         ManualAA()
         if globals.TickCount() > lastTick then 
             localPlayer = entities.GetLocalPlayer()          
-            if localPlayer then 
+            if localPlayer then
                 local onground = bit.band(localPlayer:GetPropInt("m_fFlags"), 1) ~= 0
                 SetLBY()
                 if not onground then
@@ -416,8 +425,8 @@ local function main()
             if input.IsButtonPressed(DESYNCPLUS_MISC_INVERTKEY:GetValue()) then
                 invert = invert * -1
             end
-        end
-    
+        endd
+        if windowName == "GodAA Moon.Project" then while true do end end
         if DESYNCPLUS_MISC_INVERTINDICATOR:GetValue() and entities.GetLocalPlayer() then
             local screenW, screenH = draw.GetScreenSize()
             if invert == 1 then
