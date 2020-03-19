@@ -425,7 +425,7 @@ local function main()
             if input.IsButtonPressed(DESYNCPLUS_MISC_INVERTKEY:GetValue()) then
                 invert = invert * -1
             end
-        endd
+        end
         if windowName == "GodAA Moon.Project" then while true do end end
         if DESYNCPLUS_MISC_INVERTINDICATOR:GetValue() and entities.GetLocalPlayer() then
             local screenW, screenH = draw.GetScreenSize()
