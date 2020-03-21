@@ -1,7 +1,7 @@
 -- Desync Plus 
 -- Made by stacky
 
-local CURRENTVERSION = "1.3.3"
+local CURRENTVERSION = "1.3.4"
 local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
 
 local function Update() 
@@ -112,6 +112,11 @@ local DESYNCPLUS_UPDATER_UPDATE = gui.Button(DESYNCPLUS_UPDATER_GBOX, "Update", 
 
 local DESYNCPLUS_UPDATER_CHANGELOG_GBOX = gui.Groupbox(DESYNCPLUS_TAB, "Changelog", 270, 10, 360, 0)
 local DESYNCPLUS_UPDATER_CHANGELOG_TEXT = gui.Text(DESYNCPLUS_UPDATER_CHANGELOG_GBOX, http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/changelog.txt"))
+
+local DESYNCPLUS_EXTRA_GBOX = gui.Groupbox(DESYNCPLUS_TAB, "Extra", 10, 170, 250, 0)
+local sW, sH = draw.GetScreenSize()
+local DESYNCPLUS_EXTRA_INDICATORX = gui.Slider(DESYNCPLUS_EXTRA_GBOX, "extra.indicatorx", "Indicator X Position", 10, 0, sW)
+local DESYNCPLUS_EXTRA_INDICATORY = gui.Slider(DESYNCPLUS_EXTRA_GBOX, "extra.indicatory", "Indicator Y Position", sH - 90, 0, sH)
 
 local BASEDIRECTION_STATE = 0
 local ROTATION_STATE = 0
@@ -435,7 +440,7 @@ local function main()
                 draw.Color(124, 176, 34)
             end
             draw.SetFont(FONT)
-            draw.TextShadow(10, screenH - 90, "INVERT" )
+            draw.TextShadow(DESYNCPLUS_EXTRA_INDICATORX:GetValue(), DESYNCPLUS_EXTRA_INDICATORY:GetValue(), "INVERT" )
         end
     end
 

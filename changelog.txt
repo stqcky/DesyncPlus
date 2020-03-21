@@ -1,3 +1,7 @@
+Version 1.3.4
+---------------
+- Added Indicator Position Changer (Desync Plus Tab -> Extra)
+
 Version 1.3.3
 ---------------
 - Added Invert Settings
