@@ -1,7 +1,7 @@
 -- Desync Plus 
 -- Made by stacky
 
-local CURRENTVERSION = "1.3.4"
+local CURRENTVERSION = "1.3.5"
 local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
 
 local function Update() 
@@ -53,7 +53,9 @@ DESYNCPLUS_WINDOW:SetOpenKey(45)
 
 local DESYNCPLUS_GBOX = gui.Groupbox(gui.Reference("Ragebot", "Anti-Aim"), "Manual Anti-Aim", 15, 650, 300, 0)
 local DESYNCPLUS_MANUAL_LEFT = gui.Keybox(DESYNCPLUS_GBOX, "desyncplus.manual.left", "Left Button", 0)
+local DESYNCPLUS_MANUAL_LEFTVALUE = gui.Slider(DESYNCPLUS_GBOX, "desyncplus.manual.leftvalue", "Left Value", 90, 0, 180)
 local DESYNCPLUS_MANUAL_RIGHT = gui.Keybox(DESYNCPLUS_GBOX, "desyncplus.manual.right", "Right Button", 0)
+local DESYNCPLUS_MANUAL_RIGHTVALUE = gui.Slider(DESYNCPLUS_GBOX, "desyncplus.manual.rightvalue", "Right Value", 90, 0, 180)
 local DESYNCPLUS_MANUAL_BACK = gui.Keybox(DESYNCPLUS_GBOX, "desyncplus.manual.back", "Back Button", 0)
 
 local DESYNCPLUS_BASEDIRECTION_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Base Direction", 10, 10, 250, 0)
@@ -311,18 +313,29 @@ end
 local function ManualAA()
     if DESYNCPLUS_MANUAL_LEFT:GetValue() ~= 0 then
         if input.IsButtonPressed(DESYNCPLUS_MANUAL_LEFT:GetValue()) then 
-            DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(90)
+            value = DESYNCPLUS_MANUAL_LEFTVALUE:GetValue()
+            DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(value)
+            DESYNCPLUS_SETTINGS_AIR_BASEDIRECTION_BASEVALUE:SetValue(value)
+            DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_BASEVALUE:SetValue(value)
+            DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_BASEVALUE:SetValue(value)
         end
     end
 
     if DESYNCPLUS_MANUAL_RIGHT:GetValue() ~= 0 then
         if input.IsButtonPressed(DESYNCPLUS_MANUAL_RIGHT:GetValue()) then 
-            DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(-90)
+            value = DESYNCPLUS_MANUAL_RIGHTVALUE:GetValue() * -1
+            DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(value)
+            DESYNCPLUS_SETTINGS_AIR_BASEDIRECTION_BASEVALUE:SetValue(value)
+            DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_BASEVALUE:SetValue(value)
+            DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_BASEVALUE:SetValue(value)
         end
     end
     if DESYNCPLUS_MANUAL_BACK:GetValue() ~= 0 then
         if input.IsButtonPressed(DESYNCPLUS_MANUAL_BACK:GetValue()) then 
             DESYNCPLUS_BASEDIRECTION_BASEVALUE:SetValue(180)
+            DESYNCPLUS_SETTINGS_AIR_BASEDIRECTION_BASEVALUE:SetValue(180)
+            DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_BASEVALUE:SetValue(180)
+            DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_BASEVALUE:SetValue(180)
         end
     end
 end
