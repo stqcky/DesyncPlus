@@ -1,3 +1,9 @@
+Version 1.3.6
+---------------
+- Added Invert on Hurt (Inverts when you are hurt)
+- Added Invert on Shot (Inverts when you shoot)
+- Added Invert on Enemy Shot (Inverts when the closest enemy misses you)
+
 Version 1.3.5
 ---------------
 - Fixed Manual AA not working properly

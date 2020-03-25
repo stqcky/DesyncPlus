@@ -1,7 +1,7 @@
 -- Desync Plus 
 -- Made by stacky
 
-local CURRENTVERSION = "1.3.5"
+local CURRENTVERSION = "1.3.6"
 local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
 
 local function Update() 
@@ -87,6 +87,9 @@ local DESYNCPLUS_MISC_INVERTINDICATOR = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTI
 local DESYNCPLUS_MISC_INVERTBASEDIR = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertbasedir", "Invert Base Direction", false)
 local DESYNCPLUS_MISC_INVERTROTATION = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertrotation", "Invert Rotation", false)
 local DESYNCPLUS_MISC_INVERTLBY = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertlby", "Invert LBY", false)
+local DESYNCPLUS_MISC_INVERTONHURT = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertonhurt", "Invert on Hurt", false)
+local DESYNCPLUS_MISC_INVERTONSELFSHOT = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertonselfshot", "Invert on Shot", false)
+local DESYNCPLUS_MISC_INVERTONENEMYSHOT = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertonenemyshot", "Invert on Enemy Shot", false)
 
 local DESYNCPLUS_SLOWWALK_GBOX =  gui.Groupbox(DESYNCPLUS_WINDOW, "Slow Walk", 10, 320, 250, 0)
 local DESYNCPLUS_SLOWWALK_MINSLIDER = gui.Slider(DESYNCPLUS_SLOWWALK_GBOX,"slowwalk.minslider", "Minimal Value", 0, 1, 100)
@@ -461,3 +464,54 @@ local function main()
     lastTick = globals.TickCount()
 end
 callbacks.Register("Draw", main)
+
+callbacks.Register( "FireGameEvent", function(event)
+    if DESYNCPLUS_MISC_MASTERSWITCH:GetValue() then
+        if DESYNCPLUS_MISC_INVERTONHURT:GetValue() then
+            if event:GetName() == "player_hurt" then
+                me = client.GetLocalPlayerIndex()
+                int_uid = event:GetInt("userid")
+                int_attacker = event:GetInt("attacker")
+
+                index_victim = client.GetPlayerIndexByUserID(int_uid)
+                index_attacker = client.GetPlayerIndexByUserID(int_attacker)
+
+                if index_victim == me and index_attacker ~= me then invert = invert * -1 end
+            end
+        end
+
+        if DESYNCPLUS_MISC_INVERTONSELFSHOT:GetValue() then
+            if event:GetName("weapon_fire") then
+                me = client.GetLocalPlayerIndex()
+                attacker = client.GetPlayerIndexByUserID(event:GetInt("userid"))
+                if attacker == me then invert = invert * -1 end
+            end
+        end
+
+        if DESYNCPLUS_MISC_INVERTONENEMYSHOT:GetValue() then
+            if event:GetName("weapon_fire") then
+                lPlayer = entities.GetLocalPlayer()
+                lPos = lPlayer:GetAbsOrigin()
+                players = entities.FindByClass("CCSPlayer")
+
+                closestDist = math.huge
+                closestEntity = nil
+
+                for i = 1, #players do
+                    if players[i]:GetTeamNumber() ~= lPlayer:GetTeamNumber() and players[i]:IsAlive() then
+                        pPos = players[i]:GetAbsOrigin()
+                        dist = math.sqrt(math.pow(lPos.x - pPos.x, 2) + math.pow(lPos.y - pPos.y, 2))
+                        if dist < closestDist then
+                            closestDist = dist
+                            closestEntity = players[i]
+                        end
+                    end
+                end
+
+                if entities.GetByUserID(event:GetInt("userid")):GetIndex() == closestEntity:GetIndex() then
+                    invert = invert * -1
+                end
+            end
+        end
+    end
+end )
