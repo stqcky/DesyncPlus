@@ -1,7 +1,7 @@
 -- Desync Plus 
 -- Made by stacky
 
-local CURRENTVERSION = "1.3.6"
+local CURRENTVERSION = "1.3.7"
 local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
 
 local function Update() 
@@ -49,9 +49,9 @@ if CURRENTVERSION ~= LATESTVERSION and LATESTVERSION ~= nil then
 end
 
 local DESYNCPLUS_WINDOW = gui.Window("desyncplus", windowName, 100, 100, 790, 610)
-DESYNCPLUS_WINDOW:SetOpenKey(45)
 
-local DESYNCPLUS_GBOX = gui.Groupbox(gui.Reference("Ragebot", "Anti-Aim"), "Manual Anti-Aim", 15, 650, 300, 0)
+
+local DESYNCPLUS_GBOX = gui.Groupbox(gui.Reference("Ragebot", "Anti-Aim"), "Manual Anti-Aim", 15, 720, 298, 0)
 local DESYNCPLUS_MANUAL_LEFT = gui.Keybox(DESYNCPLUS_GBOX, "desyncplus.manual.left", "Left Button", 0)
 local DESYNCPLUS_MANUAL_LEFTVALUE = gui.Slider(DESYNCPLUS_GBOX, "desyncplus.manual.leftvalue", "Left Value", 90, 0, 180)
 local DESYNCPLUS_MANUAL_RIGHT = gui.Keybox(DESYNCPLUS_GBOX, "desyncplus.manual.right", "Right Button", 0)
@@ -63,7 +63,7 @@ local DESYNCPLUS_BASEDIRECTION_STATE = gui.Combobox(DESYNCPLUS_BASEDIRECTION_GBO
 local DESYNCPLUS_BASEDIRECTION_BASEVALUE = gui.Slider(DESYNCPLUS_BASEDIRECTION_GBOX,"basedirection.basevalue", "Base Value", 0, -180, 180)
 local DESYNCPLUS_BASEDIRECTION_MINSLIDER = gui.Slider(DESYNCPLUS_BASEDIRECTION_GBOX,"basedirection.minslider", "Minimal Value", 0, -180, 180)
 local DESYNCPLUS_BASEDIRECTION_MAXSLIDER = gui.Slider(DESYNCPLUS_BASEDIRECTION_GBOX,"basedirection.maxslider", "Maximal Value", 0, -180, 180)
-local DESYNCPLUS_BASEDIRECTION_TYPE = gui.Combobox(DESYNCPLUS_BASEDIRECTION_GBOX, "basedirection.type", "Type", "Off", "Jitter", "Switch (WIP)", "Static")
+local DESYNCPLUS_BASEDIRECTION_TYPE = gui.Combobox(DESYNCPLUS_BASEDIRECTION_GBOX, "basedirection.type", "Type", "Off", "Jitter", "Switch", "Static")
 
 local DESYNCPLUS_ROTATION_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Rotation", 270, 10, 250, 0)
 local DESYNCPLUS_ROTATION_STATE = gui.Combobox(DESYNCPLUS_ROTATION_GBOX, "rotation.state", "State", "Standing", "Moving", "Air")
@@ -90,6 +90,7 @@ local DESYNCPLUS_MISC_INVERTLBY = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "
 local DESYNCPLUS_MISC_INVERTONHURT = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertonhurt", "Invert on Hurt", false)
 local DESYNCPLUS_MISC_INVERTONSELFSHOT = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertonselfshot", "Invert on Shot", false)
 local DESYNCPLUS_MISC_INVERTONENEMYSHOT = gui.Checkbox(DESYNCPLUS_MISC_INVERTSETTINGS, "misc.invertonenemyshot", "Invert on Enemy Shot", false)
+local DESYNCPLUS_MISC_OVERRIDE = gui.Slider( DESYNCPLUS_MISC_GBOX, "misc.overridear", "Override Anti-Resolver", 58, 0, 58 )
 
 local DESYNCPLUS_SLOWWALK_GBOX =  gui.Groupbox(DESYNCPLUS_WINDOW, "Slow Walk", 10, 320, 250, 0)
 local DESYNCPLUS_SLOWWALK_MINSLIDER = gui.Slider(DESYNCPLUS_SLOWWALK_GBOX,"slowwalk.minslider", "Minimal Value", 0, 1, 100)
@@ -97,11 +98,17 @@ local DESYNCPLUS_SLOWWALK_MAXSLIDER = gui.Slider(DESYNCPLUS_SLOWWALK_GBOX,"sloww
 local DESYNCPLUS_SLOWWALK_SPEED = gui.Slider(DESYNCPLUS_SLOWWALK_GBOX,"slowwalk.speed", "Cycle Speed", 0, 1, 20)
 local DESYNCPLUS_SLOWWALK_TYPE = gui.Combobox(DESYNCPLUS_SLOWWALK_GBOX, "slowwalk.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Static")
 
-local DESYNCPLUS_FAKELAG_GBOX = gui.Groupbox(DESYNCPLUS_WINDOW, "Fakelag", 270, 320, 250, 0)
-local DESYNCPLUS_FAKELAG_MINSLIDER = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"fakelag.minslider", "Minimal Value", 0, 2, 17)
-local DESYNCPLUS_FAKELAG_MAXSLIDER = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"fakelag.maxslider", "Maximal Value", 0, 2, 17)
-local DESYNCPLUS_FAKELAG_SPEED = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"fakelag.speed", "Cycle Speed", 0, 1, 20)
-local DESYNCPLUS_FAKELAG_TYPE = gui.Combobox(DESYNCPLUS_FAKELAG_GBOX, "fakelag.type", "Type", "Off", "Jitter", "Cycle", "Static")
+local DESYNCPLUS_PITCH_GBOX = gui.Groupbox( DESYNCPLUS_WINDOW, "Pitch", 270, 320, 250, 0 )
+local DESYNCPLUS_PITCH_MINSLIDER = gui.Slider(DESYNCPLUS_PITCH_GBOX,"pitch.minslider", "Minimal Value", 0, -360, 360)
+local DESYNCPLUS_PITCH_MAXSLIDER = gui.Slider(DESYNCPLUS_PITCH_GBOX,"pitch.maxslider", "Maximal Value", 0, -360, 360)
+local DESYNCPLUS_PITCH_SPEED = gui.Slider(DESYNCPLUS_PITCH_GBOX,"pitch.speed", "Cycle Speed", 0, 1, 20)
+local DESYNCPLUS_PITCH_TYPE = gui.Combobox(DESYNCPLUS_PITCH_GBOX, "pitch.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Static")
+
+local DESYNCPLUS_FAKELAG_GBOX = gui.Groupbox(gui.Reference( "Misc", "Enhancement" ), "Fakelag Customizer", 328, 310, 298, 0)
+local DESYNCPLUS_FAKELAG_MINSLIDER = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"desyncplus.fakelag.minslider", "Minimal Value", 0, 2, 17)
+local DESYNCPLUS_FAKELAG_MAXSLIDER = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"desyncplus.fakelag.maxslider", "Maximal Value", 0, 2, 17)
+local DESYNCPLUS_FAKELAG_SPEED = gui.Slider(DESYNCPLUS_FAKELAG_GBOX,"desyncplus.fakelag.speed", "Cycle Speed", 0, 1, 20)
+local DESYNCPLUS_FAKELAG_TYPE = gui.Combobox(DESYNCPLUS_FAKELAG_GBOX, "desyncplus.fakelag.type", "Type", "Off", "Jitter", "Cycle", "Static")
 
 local DESYNCPLUS_TAB = gui.Tab(gui.Reference("Settings"), "desyncplus.tab", "Desync Plus")
 
@@ -133,9 +140,13 @@ local angle, direction = 0, 0
 local angle2, direction2 = 0, 0
 local angle3, direction3 = 0, 0
 local angle4, direction4 = 0, 0
+local angle5, direction5 = 0, 0
 local windowOpened = true
 local lastTick = 0
 local flMove = 3
+
+local pitchLastValue = -1337
+local basedirLastValue = -1337
 
 local function SetLBY()
     lbyType = DESYNCPLUS_LBY_TYPE:GetValue() 
@@ -264,7 +275,16 @@ local function SetBaseDirection(state)
             if baseValue + RandomRange > 180 or baseValue + RandomRange < -180 then baseValue = baseValue * -1 end
             gui.SetValue("rbot.antiaim.base", (baseValue + RandomRange) * binvert)
         elseif BaseDirectionType == 2 then   
-            --aaaaaaaaaaaaaaaaaaaaa
+            if basedirLastValue == minValue then
+                gui.SetValue("rbot.antiaim.base", maxValue)
+                basedirLastValue = maxValue
+            elseif basedirLastValue == maxValue then
+                gui.SetValue("rbot.antiaim.base", minValue)
+                basedirLastValue = minValue
+            else
+                gui.SetValue("rbot.antiaim.base", maxValue)
+                basedirLastValue = maxValue
+            end
         elseif BaseDirectionType == 3 then
             gui.SetValue("rbot.antiaim.base", baseValue * binvert)
         end
@@ -340,6 +360,46 @@ local function ManualAA()
             DESYNCPLUS_SETTINGS_MOVE_BASEDIRECTION_BASEVALUE:SetValue(180)
             DESYNCPLUS_SETTINGS_STAND_BASEDIRECTION_BASEVALUE:SetValue(180)
         end
+    end
+end
+
+local function SetPitch(cmd)
+    local pitchType = DESYNCPLUS_PITCH_TYPE:GetValue()
+    if pitchType ~= 0 then  
+        local minValue = DESYNCPLUS_PITCH_MINSLIDER:GetValue()
+        local maxValue = DESYNCPLUS_PITCH_MAXSLIDER:GetValue()
+        local speed = DESYNCPLUS_PITCH_SPEED:GetValue() * 2
+        local eCurrentAngles = cmd.viewangles
+
+        if pitchType == 1 then    
+            cmd.viewangles = EulerAngles(math.random(minValue, maxValue), eCurrentAngles["yaw"], eCurrentAngles["roll"])
+        elseif pitchType == 2 then
+            if angle5 >= maxValue then direction5 = 1 elseif angle5 <= minValue + speed then direction5 = 0 end       
+            if direction5 == 0 then angle5 = angle5 + speed elseif direction5 == 1 then angle5 = angle5 - speed end      
+            cmd.viewangles = EulerAngles(angle5, eCurrentAngles["yaw"], eCurrentAngles["roll"])
+        elseif pitchType == 3 then 
+            local currentValue = eCurrentAngles["pitch"]
+            print("current: " .. tostring(currentValue))
+            print("min value: " .. tostring(minValue))
+            print("max value: " .. tostring(maxValue))
+            print()
+            if pitchLastValue == minValue then 
+                print("1")
+                cmd.viewangles = EulerAngles(maxValue, eCurrentAngles["yaw"], eCurrentAngles["roll"])
+                pitchLastValue = maxValue
+            elseif pitchLastValue == maxValue then 
+                print("2")
+                cmd.viewangles = EulerAngles(minValue, eCurrentAngles["yaw"], eCurrentAngles["roll"])
+                pitchLastValue = minValue
+            else 
+                print("3")
+                cmd.viewangles = EulerAngles(maxValue, eCurrentAngles["yaw"], eCurrentAngles["roll"]) 
+                pitchLastValue = maxValue
+            end          
+            print()
+        elseif pitchType == 4 then
+            cmd.viewangles = EulerAngles(minValue, eCurrentAngles["yaw"], eCurrentAngles["roll"])
+        end              
     end
 end
 
@@ -419,6 +479,14 @@ local function main()
     end
 
     if DESYNCPLUS_MISC_MASTERSWITCH:GetValue() then
+        if gui.GetValue( "rbot.antiaim.advanced.antiresolver" ) then
+            if gui.GetValue( "rbot.antiaim.base.rotation" ) > 0 then
+                gui.SetValue( "rbot.antiaim.base.rotation", DESYNCPLUS_MISC_OVERRIDE:GetValue() )
+            else
+                gui.SetValue( "rbot.antiaim.base.rotation", DESYNCPLUS_MISC_OVERRIDE:GetValue() * -1 )
+            end
+        end
+
         ManualAA()
         if globals.TickCount() > lastTick then 
             localPlayer = entities.GetLocalPlayer()          
@@ -447,7 +515,7 @@ local function main()
                 invert = invert * -1
             end
         end
-        if windowName == "GodAA Moon.Project" then while true do end end
+        if windowName == "Project Moon for V5" then while true do end end
         if DESYNCPLUS_MISC_INVERTINDICATOR:GetValue() and entities.GetLocalPlayer() then
             local screenW, screenH = draw.GetScreenSize()
             if invert == 1 then
@@ -481,7 +549,7 @@ callbacks.Register( "FireGameEvent", function(event)
         end
 
         if DESYNCPLUS_MISC_INVERTONSELFSHOT:GetValue() then
-            if event:GetName("weapon_fire") then
+            if event:GetName() == "weapon_fire" then
                 me = client.GetLocalPlayerIndex()
                 attacker = client.GetPlayerIndexByUserID(event:GetInt("userid"))
                 if attacker == me then invert = invert * -1 end
@@ -489,7 +557,7 @@ callbacks.Register( "FireGameEvent", function(event)
         end
 
         if DESYNCPLUS_MISC_INVERTONENEMYSHOT:GetValue() then
-            if event:GetName("weapon_fire") then
+            if event:GetName() == "weapon_fire" then
                 lPlayer = entities.GetLocalPlayer()
                 lPos = lPlayer:GetAbsOrigin()
                 players = entities.FindByClass("CCSPlayer")
@@ -513,5 +581,15 @@ callbacks.Register( "FireGameEvent", function(event)
                 end
             end
         end
+    end
+end )
+
+client.AllowListener( "player_hurt" )
+client.AllowListener( "weapon_fire" )
+
+callbacks.Register( "CreateMove", function(cmd)
+    if DESYNCPLUS_MISC_MASTERSWITCH:GetValue() and entities.GetLocalPlayer():GetWeaponType() ~= 9 and
+       bit.band(cmd.buttons, 1) == 0 and bit.band(cmd.buttons, 32) == 0 and bit.band(cmd.buttons, 2048) == 0  then
+        SetPitch(cmd)
     end
 end )

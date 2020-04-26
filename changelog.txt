@@ -1,3 +1,12 @@
+Version 1.3.7
+---------------
+- Added Pitch Customizer (Movement can be broken with untrusted angles, desync yaws restrict pitch if it moves too quickly)
+- Added Override Anti-Resolver (Overrides the hardcoded 58 and -58 values)
+- Fixed Base Direction Switch Type
+- Fixed Manual Anti-Aim Y Position
+- Moved Fakelag Customizer to Misc -> Enhancement
+- Minor improvements
+
 Version 1.3.6
 ---------------
 - Added Invert on Hurt (Inverts when you are hurt)
