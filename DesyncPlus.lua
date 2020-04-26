@@ -1,7 +1,7 @@
 -- Desync Plus 
 -- Made by stacky
 
-local CURRENTVERSION = "1.3.7"
+local CURRENTVERSION = "1.3.8"
 local LATESTVERSION = http.Get("https://raw.githubusercontent.com/stqcky/DesyncPlus/master/version.txt")
 
 local function Update() 
@@ -99,8 +99,8 @@ local DESYNCPLUS_SLOWWALK_SPEED = gui.Slider(DESYNCPLUS_SLOWWALK_GBOX,"slowwalk.
 local DESYNCPLUS_SLOWWALK_TYPE = gui.Combobox(DESYNCPLUS_SLOWWALK_GBOX, "slowwalk.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Static")
 
 local DESYNCPLUS_PITCH_GBOX = gui.Groupbox( DESYNCPLUS_WINDOW, "Pitch", 270, 320, 250, 0 )
-local DESYNCPLUS_PITCH_MINSLIDER = gui.Slider(DESYNCPLUS_PITCH_GBOX,"pitch.minslider", "Minimal Value", 0, -360, 360)
-local DESYNCPLUS_PITCH_MAXSLIDER = gui.Slider(DESYNCPLUS_PITCH_GBOX,"pitch.maxslider", "Maximal Value", 0, -360, 360)
+local DESYNCPLUS_PITCH_MINSLIDER = gui.Slider(DESYNCPLUS_PITCH_GBOX,"pitch.minslider", "Minimal Value", 0, -180, 180)
+local DESYNCPLUS_PITCH_MAXSLIDER = gui.Slider(DESYNCPLUS_PITCH_GBOX,"pitch.maxslider", "Maximal Value", 0, -180, 180)
 local DESYNCPLUS_PITCH_SPEED = gui.Slider(DESYNCPLUS_PITCH_GBOX,"pitch.speed", "Cycle Speed", 0, 1, 20)
 local DESYNCPLUS_PITCH_TYPE = gui.Combobox(DESYNCPLUS_PITCH_GBOX, "pitch.type", "Type", "Off", "Jitter", "Cycle", "Switch", "Static")
 
