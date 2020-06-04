@@ -1260,6 +1260,7 @@ local function fetchConfigs(filename)
     if string.match(filename, "%.dat") then
         local reader = file.Open( filename, "r")
         local line = split(reader:Read(), string.char(10))[1]
+        reader:Close()
         if not line:match("Desync Plus") then return end
         table.insert(savedConfigs, filename:sub(1, -5))
     end
