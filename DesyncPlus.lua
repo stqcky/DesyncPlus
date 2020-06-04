@@ -1,6 +1,6 @@
 -- Desync Plus by stacky
 
-DESYNCPLUS_CURRENT_VERSION = "2.0.0"
+DESYNCPLUS_CURRENT_VERSION = "2.0.1"
 DESYNCPLUS_LATEST_VERSION = "Not Checked"
 
 local SCREEN_W, SCREEN_H = draw.GetScreenSize()
@@ -340,17 +340,17 @@ DESYNCPLUS_ANTIAIM_ROTATION_STANDING_MINVALUE = gui.Slider( DESYNCPLUS_ANTIAIM_R
 DESYNCPLUS_ANTIAIM_ROTATION_STANDING_MAXVALUE = gui.Slider( DESYNCPLUS_ANTIAIM_ROTATION_STANDING_GBOX, "antiaim.rotation.standing.maxvalue", "Maximal Value", 0, -58, 58 )
 DESYNCPLUS_ANTIAIM_ROTATION_STANDING_SPEED = gui.Slider( DESYNCPLUS_ANTIAIM_ROTATION_STANDING_GBOX, "antiaim.rotation.standing.speed", "Speed", 0, 0, 100 )
 
-local ANTIAIM_ROTATION_MOVING_GBOX = gui.Groupbox( WINDOW, "Rotation", 220, 165, 200, 200 )
-local ANTIAIM_ROTATION_MOVING_TYPE = gui.Combobox( ANTIAIM_ROTATION_MOVING_GBOX, "antiaim.rotation.moving.type", "Type", "Off", "Static", "Switch", "Cycle", "Jitter" )
-local ANTIAIM_ROTATION_MOVING_MINVALUE = gui.Slider( ANTIAIM_ROTATION_MOVING_GBOX, "antiaim.rotation.moving.minvalue", "Minimal Value", 0, -58, 58 )
-local ANTIAIM_ROTATION_MOVING_MAXVALUE = gui.Slider( ANTIAIM_ROTATION_MOVING_GBOX, "antiaim.rotation.moving.maxvalue", "Maximal Value", 0, -58, 58 )
-local ANTIAIM_ROTATION_MOVING_SPEED = gui.Slider( ANTIAIM_ROTATION_MOVING_GBOX, "antiaim.rotation.moving.speed", "Speed", 0, 0, 100 )
+DESYNCPLUS_ANTIAIM_ROTATION_MOVING_GBOX = gui.Groupbox( WINDOW, "Rotation", 220, 165, 200, 200 )
+DESYNCPLUS_ANTIAIM_ROTATION_MOVING_TYPE = gui.Combobox( DESYNCPLUS_ANTIAIM_ROTATION_MOVING_GBOX, "antiaim.rotation.moving.type", "Type", "Off", "Static", "Switch", "Cycle", "Jitter" )
+DESYNCPLUS_ANTIAIM_ROTATION_MOVING_MINVALUE = gui.Slider( DESYNCPLUS_ANTIAIM_ROTATION_MOVING_GBOX, "antiaim.rotation.moving.minvalue", "Minimal Value", 0, -58, 58 )
+DESYNCPLUS_ANTIAIM_ROTATION_MOVING_MAXVALUE = gui.Slider( DESYNCPLUS_ANTIAIM_ROTATION_MOVING_GBOX, "antiaim.rotation.moving.maxvalue", "Maximal Value", 0, -58, 58 )
+DESYNCPLUS_ANTIAIM_ROTATION_MOVING_SPEED = gui.Slider( DESYNCPLUS_ANTIAIM_ROTATION_MOVING_GBOX, "antiaim.rotation.moving.speed", "Speed", 0, 0, 100 )
 
-local ANTIAIM_ROTATION_AIR_GBOX = gui.Groupbox( WINDOW, "Rotation", 220, 165, 200, 200 )
-local ANTIAIM_ROTATION_AIR_TYPE = gui.Combobox( ANTIAIM_ROTATION_AIR_GBOX, "antiaim.rotation.air.type", "Type", "Off", "Static", "Switch", "Cycle", "Jitter" )
-local ANTIAIM_ROTATION_AIR_MINVALUE = gui.Slider( ANTIAIM_ROTATION_AIR_GBOX, "antiaim.rotation.air.minvalue", "Minimal Value", 0, -58, 58 )
-local ANTIAIM_ROTATION_AIR_MAXVALUE = gui.Slider( ANTIAIM_ROTATION_AIR_GBOX, "antiaim.rotation.air.maxvalue", "Maximal Value", 0, -58, 58 )
-local ANTIAIM_ROTATION_AIR_SPEED = gui.Slider( ANTIAIM_ROTATION_AIR_GBOX, "antiaim.rotation.air.speed", "Speed", 0, 0, 100 )
+DESYNCPLUS_ANTIAIM_ROTATION_AIR_GBOX = gui.Groupbox( WINDOW, "Rotation", 220, 165, 200, 200 )
+DESYNCPLUS_ANTIAIM_ROTATION_AIR_TYPE = gui.Combobox( DESYNCPLUS_ANTIAIM_ROTATION_AIR_GBOX, "antiaim.rotation.air.type", "Type", "Off", "Static", "Switch", "Cycle", "Jitter" )
+DESYNCPLUS_ANTIAIM_ROTATION_AIR_MINVALUE = gui.Slider( DESYNCPLUS_ANTIAIM_ROTATION_AIR_GBOX, "antiaim.rotation.air.minvalue", "Minimal Value", 0, -58, 58 )
+DESYNCPLUS_ANTIAIM_ROTATION_AIR_MAXVALUE = gui.Slider( DESYNCPLUS_ANTIAIM_ROTATION_AIR_GBOX, "antiaim.rotation.air.maxvalue", "Maximal Value", 0, -58, 58 )
+DESYNCPLUS_ANTIAIM_ROTATION_AIR_SPEED = gui.Slider( DESYNCPLUS_ANTIAIM_ROTATION_AIR_GBOX, "antiaim.rotation.air.speed", "Speed", 0, 0, 100 )
 
 -- LBY
 local ANTIAIM_LBY_STANDING_GBOX = gui.Groupbox( WINDOW, "LBY", 430, 165, 200, 200 )
@@ -395,8 +395,8 @@ local ANTIAIM_PITCH_AIR_SPEED = gui.Slider( ANTIAIM_PITCH_AIR_GBOX, "antiaim.pit
 
 local tblANTIAIM = {
     DESYNCPLUS_ANTIAIM_BASEDIR_STANDING_GBOX, DESYNCPLUS_ANTIAIM_ROTATION_STANDING_GBOX, ANTIAIM_LBY_STANDING_GBOX, ANTIAIM_PITCH_STANDING_GBOX,
-    DESYNCPLUS_ANTIAIM_BASEDIR_MOVING_GBOX, ANTIAIM_ROTATION_MOVING_GBOX, ANTIAIM_LBY_MOVING_GBOX, ANTIAIM_PITCH_MOVING_GBOX,
-    DESYNCPLUS_ANTIAIM_BASEDIR_AIR_GBOX, ANTIAIM_ROTATION_AIR_GBOX, ANTIAIM_LBY_AIR_GBOX, ANTIAIM_PITCH_AIR_GBOX, ANTIAIM_STATE_GBOX
+    DESYNCPLUS_ANTIAIM_BASEDIR_MOVING_GBOX, DESYNCPLUS_ANTIAIM_ROTATION_MOVING_GBOX, ANTIAIM_LBY_MOVING_GBOX, ANTIAIM_PITCH_MOVING_GBOX,
+    DESYNCPLUS_ANTIAIM_BASEDIR_AIR_GBOX, DESYNCPLUS_ANTIAIM_ROTATION_AIR_GBOX, ANTIAIM_LBY_AIR_GBOX, ANTIAIM_PITCH_AIR_GBOX, ANTIAIM_STATE_GBOX
 }
 
 local tblBASEDIR = {
@@ -409,11 +409,11 @@ local tblBASEDIR = {
 }
 
 local tblROTATION = {
-    { DESYNCPLUS_ANTIAIM_ROTATION_STANDING_TYPE, ANTIAIM_ROTATION_MOVING_TYPE, ANTIAIM_ROTATION_AIR_TYPE },
+    { DESYNCPLUS_ANTIAIM_ROTATION_STANDING_TYPE, DESYNCPLUS_ANTIAIM_ROTATION_MOVING_TYPE, DESYNCPLUS_ANTIAIM_ROTATION_AIR_TYPE },
     {
         { DESYNCPLUS_ANTIAIM_ROTATION_STANDING_MINVALUE, DESYNCPLUS_ANTIAIM_ROTATION_STANDING_MAXVALUE, DESYNCPLUS_ANTIAIM_ROTATION_STANDING_SPEED },
-        { ANTIAIM_ROTATION_MOVING_MINVALUE, ANTIAIM_ROTATION_MOVING_MAXVALUE, ANTIAIM_ROTATION_MOVING_SPEED },
-        { ANTIAIM_ROTATION_AIR_MINVALUE, ANTIAIM_ROTATION_AIR_MAXVALUE, ANTIAIM_ROTATION_AIR_SPEED }
+        { DESYNCPLUS_ANTIAIM_ROTATION_MOVING_MINVALUE, DESYNCPLUS_ANTIAIM_ROTATION_MOVING_MAXVALUE, DESYNCPLUS_ANTIAIM_ROTATION_MOVING_SPEED },
+        { DESYNCPLUS_ANTIAIM_ROTATION_AIR_MINVALUE, DESYNCPLUS_ANTIAIM_ROTATION_AIR_MAXVALUE, DESYNCPLUS_ANTIAIM_ROTATION_AIR_SPEED }
     }
 }
 
@@ -439,6 +439,10 @@ local tblPITCHVALUES = {
     ANTIAIM_PITCH_STANDING_MINVALUE, ANTIAIM_PITCH_STANDING_MAXVALUE, ANTIAIM_PITCH_MOVING_MINVALUE, ANTIAIM_PITCH_MOVING_MAXVALUE, ANTIAIM_PITCH_AIR_MINVALUE, ANTIAIM_PITCH_AIR_MAXVALUE
 }
 
+local tblShared = { tblBASEDIR, tblROTATION, tblLBY, tblPITCH }
+
+local bShared = false
+
 local function handleAntiaimGUI()
     local startingIndex = nil
     if activeState == states.standing then
@@ -459,8 +463,10 @@ local function handleAntiaimGUI()
         tblDisable = {true, true, true, true}
     elseif tblBASEDIR[1][activeState + 1]:GetValue() == 1 then
         tblDisable = {false, true, true, true}
-    elseif tblBASEDIR[1][activeState + 1]:GetValue() == 2 or tblBASEDIR[1][activeState + 1]:GetValue() == 3 then
+    elseif tblBASEDIR[1][activeState + 1]:GetValue() == 2 then
         tblDisable = {true, false, false, false}
+    elseif tblBASEDIR[1][activeState + 1]:GetValue() == 3 then
+        tblDisable = {false, false, false, false}
     elseif tblBASEDIR[1][activeState + 1]:GetValue() == 4 then
         tblDisable = {false, false, false, false}
     end
@@ -530,6 +536,19 @@ local function handleAntiaimGUI()
             end
         end
     end
+
+    if bShared then
+        for tbl = 1, #tblShared do
+            tblShared[tbl][1][2]:SetValue(tblShared[tbl][1][1]:GetValue())
+            tblShared[tbl][1][3]:SetValue(tblShared[tbl][1][1]:GetValue())
+    
+            for i = 2, #tblShared[tbl][2] do
+                for j = 1, #tblShared[tbl][2][i] do
+                    tblShared[tbl][2][i][j]:SetValue(tblShared[tbl][2][1][j]:GetValue())
+                end
+            end
+        end
+    end
 end
 
 local playerState = {
@@ -540,8 +559,9 @@ local playerState = {
 
 local iBaseDirTick = 0
 local iBaseDirSwitch = 0
-local iBaseDirDirection = 0
+local iBaseDirDirection = 1
 local iBaseDirAngle = 0
+local iLastBaseValue = 0
 
 local iRotationTick = 0
 local iRotationSwitch = 0
@@ -567,12 +587,22 @@ local bInvertBaseDir = false
 local bInvertRotation = false
 local bInvertLBY = false
 
+local function calcCycle(angle, step)
+    if step == -1 then
+        if angle == -179 then
+            return 180
+        end
+    else
+        if angle == 180 then
+            return -179
+        end
+    end
+
+    return angle + step
+end
+
 local function handleAntiaim(cmd)
     local hLocalPlayer = entities.GetLocalPlayer()
-    if not hLocalPlayer then 
-        iBaseDirTick = 0
-        return 
-    end
 
     local tblValues = {
         BaseDir = { Type = nil, BaseValue = nil, MinValue = nil, MaxValue = nil, Speed = nil },
@@ -588,10 +618,10 @@ local function handleAntiaim(cmd)
         tblValues.BaseDir.MaxValue = DESYNCPLUS_ANTIAIM_BASEDIR_AIR_MAXVALUE:GetValue()
         tblValues.BaseDir.Speed = DESYNCPLUS_ANTIAIM_BASEDIR_AIR_SPEED:GetValue()
 
-        tblValues.Rotation.Type = ANTIAIM_ROTATION_AIR_TYPE:GetValue()
-        tblValues.Rotation.MinValue = ANTIAIM_ROTATION_AIR_MINVALUE:GetValue()
-        tblValues.Rotation.MaxValue = ANTIAIM_ROTATION_AIR_MAXVALUE:GetValue()
-        tblValues.Rotation.Speed = ANTIAIM_ROTATION_AIR_SPEED:GetValue()
+        tblValues.Rotation.Type = DESYNCPLUS_ANTIAIM_ROTATION_AIR_TYPE:GetValue()
+        tblValues.Rotation.MinValue = DESYNCPLUS_ANTIAIM_ROTATION_AIR_MINVALUE:GetValue()
+        tblValues.Rotation.MaxValue = DESYNCPLUS_ANTIAIM_ROTATION_AIR_MAXVALUE:GetValue()
+        tblValues.Rotation.Speed = DESYNCPLUS_ANTIAIM_ROTATION_AIR_SPEED:GetValue()
 
         tblValues.LBY.Type = ANTIAIM_LBY_AIR_TYPE:GetValue()
         tblValues.LBY.MinValue = ANTIAIM_LBY_AIR_MINVALUE:GetValue()
@@ -611,10 +641,10 @@ local function handleAntiaim(cmd)
             tblValues.BaseDir.MaxValue = DESYNCPLUS_ANTIAIM_BASEDIR_MOVING_MAXVALUE:GetValue()
             tblValues.BaseDir.Speed = DESYNCPLUS_ANTIAIM_BASEDIR_MOVING_SPEED:GetValue()
     
-            tblValues.Rotation.Type = ANTIAIM_ROTATION_MOVING_TYPE:GetValue()
-            tblValues.Rotation.MinValue = ANTIAIM_ROTATION_MOVING_MINVALUE:GetValue()
-            tblValues.Rotation.MaxValue = ANTIAIM_ROTATION_MOVING_MAXVALUE:GetValue()
-            tblValues.Rotation.Speed = ANTIAIM_ROTATION_MOVING_SPEED:GetValue()
+            tblValues.Rotation.Type = DESYNCPLUS_ANTIAIM_ROTATION_MOVING_TYPE:GetValue()
+            tblValues.Rotation.MinValue = DESYNCPLUS_ANTIAIM_ROTATION_MOVING_MINVALUE:GetValue()
+            tblValues.Rotation.MaxValue = DESYNCPLUS_ANTIAIM_ROTATION_MOVING_MAXVALUE:GetValue()
+            tblValues.Rotation.Speed = DESYNCPLUS_ANTIAIM_ROTATION_MOVING_SPEED:GetValue()
     
             tblValues.LBY.Type = ANTIAIM_LBY_MOVING_TYPE:GetValue()
             tblValues.LBY.MinValue = ANTIAIM_LBY_MOVING_MINVALUE:GetValue()
@@ -665,12 +695,23 @@ local function handleAntiaim(cmd)
     if tblValues.BaseDir.Type == 1 then -- Static
         gui.SetValue("rbot.antiaim.base", tblValues.BaseDir.BaseValue * iInvertBaseDir)
     elseif tblValues.BaseDir.Type == 3 then -- Cycle
-        if iBaseDirAngle >= tblValues.BaseDir.MaxValue then iBaseDirDirection = 1 
-        elseif iBaseDirAngle <= tblValues.BaseDir.MinValue + tblValues.BaseDir.Speed / 4 then  iBaseDirDirection = 0 end
+        local iSteps = math.floor(tblValues.BaseDir.Speed / 4)
 
-        if iBaseDirDirection == 0 then iBaseDirAngle = iBaseDirAngle + tblValues.BaseDir.Speed / 4
-        elseif iBaseDirDirection == 1 then iBaseDirAngle = iBaseDirAngle - tblValues.BaseDir.Speed / 4 end      
+        if iLastBaseValue ~= tblValues.BaseDir.BaseValue then
+            iBaseDirAngle = tblValues.BaseDir.BaseValue
+            iBaseDirDirection = 1
+        end
+
+        for i = 0, iSteps do
+            iBaseDirAngle = calcCycle(iBaseDirAngle, iBaseDirDirection)
+
+            if iBaseDirAngle == tblValues.BaseDir.MaxValue or iBaseDirAngle == tblValues.BaseDir.MinValue then
+                iBaseDirDirection = iBaseDirDirection * -1
+            end
+        end
+
         gui.SetValue("rbot.antiaim.base", iBaseDirAngle * iInvertBaseDir)
+        iLastBaseValue = tblValues.BaseDir.BaseValue
     elseif globals.TickCount() >= iBaseDirTick + (100 - tblValues.BaseDir.Speed) * iTickRateMultiplier then 
         if tblValues.BaseDir.Type == 2 then -- Switch
             if iBaseDirSwitch == tblValues.BaseDir.MinValue then
@@ -813,8 +854,8 @@ local builderTable = {
     DESYNCPLUS_ANTIAIM_BASEDIR_MOVING_BASEVALUE, DESYNCPLUS_ANTIAIM_BASEDIR_MOVING_MINVALUE, DESYNCPLUS_ANTIAIM_BASEDIR_MOVING_MAXVALUE, DESYNCPLUS_ANTIAIM_BASEDIR_MOVING_SPEED,
     DESYNCPLUS_ANTIAIM_BASEDIR_AIR_BASEVALUE, DESYNCPLUS_ANTIAIM_BASEDIR_AIR_MINVALUE, DESYNCPLUS_ANTIAIM_BASEDIR_AIR_MAXVALUE, DESYNCPLUS_ANTIAIM_BASEDIR_AIR_SPEED,
     DESYNCPLUS_ANTIAIM_ROTATION_STANDING_MINVALUE, DESYNCPLUS_ANTIAIM_ROTATION_STANDING_MAXVALUE, DESYNCPLUS_ANTIAIM_ROTATION_STANDING_SPEED,
-    ANTIAIM_ROTATION_MOVING_MINVALUE, ANTIAIM_ROTATION_MOVING_MAXVALUE, ANTIAIM_ROTATION_MOVING_SPEED,
-    ANTIAIM_ROTATION_AIR_MINVALUE, ANTIAIM_ROTATION_AIR_MAXVALUE, ANTIAIM_ROTATION_AIR_SPEED,
+    DESYNCPLUS_ANTIAIM_ROTATION_MOVING_MINVALUE, DESYNCPLUS_ANTIAIM_ROTATION_MOVING_MAXVALUE, DESYNCPLUS_ANTIAIM_ROTATION_MOVING_SPEED,
+    DESYNCPLUS_ANTIAIM_ROTATION_AIR_MINVALUE, DESYNCPLUS_ANTIAIM_ROTATION_AIR_MAXVALUE, DESYNCPLUS_ANTIAIM_ROTATION_AIR_SPEED,
     ANTIAIM_LBY_STANDING_MINVALUE, ANTIAIM_LBY_STANDING_MAXVALUE, ANTIAIM_LBY_STANDING_SPEED, ANTIAIM_LBY_STANDING_VALUE,
     ANTIAIM_LBY_MOVING_MINVALUE, ANTIAIM_LBY_MOVING_MAXVALUE, ANTIAIM_LBY_MOVING_SPEED, ANTIAIM_LBY_MOVING_VALUE,
     ANTIAIM_LBY_AIR_MINVALUE, ANTIAIM_LBY_AIR_MAXVALUE, ANTIAIM_LBY_AIR_SPEED, ANTIAIM_LBY_AIR_VALUE,
@@ -978,6 +1019,7 @@ local MISC_FAKELAG_TYPE = gui.Combobox( MISC_FAKELAG_GBOX, "misc.fakelag.type", 
 local MISC_FAKELAG_MINVALUE = gui.Slider( MISC_FAKELAG_GBOX, "misc.fakelag.minvalue", "Minimal Value", 3, 3, 17 )
 local MISC_FAKELAG_MAXVALUE = gui.Slider( MISC_FAKELAG_GBOX, "misc.fakelag.maxvalue", "Maximal Value", 3, 3, 17 )
 local MISC_FAKELAG_SPEED = gui.Slider( MISC_FAKELAG_GBOX, "misc.fakelag.speed", "Speed", 0, 0, 100 )
+local MISC_FAKELAG_DISABLEDONREV = gui.Checkbox( MISC_FAKELAG_GBOX, "misc.fakelag.disableonrev", "Disable on Revolver", false )
 
 local MISC_INVERTER_GBOX = gui.Groupbox( WINDOW, "Inverter", 430, 85, 200, 0 )
 local MISC_INVERTER_KEY = gui.Keybox( MISC_INVERTER_GBOX, "misc.inverter.key", "Invert Key", 0 )
@@ -1127,6 +1169,14 @@ local function handleMisc()
         iFakeLagTick = globals.TickCount()
     end
 
+    if MISC_FAKELAG_DISABLEDONREV:GetValue() then
+        if entities.GetLocalPlayer():GetWeaponID() == 64 then
+            gui.SetValue( "misc.fakelag.enable", false )
+        else
+            gui.SetValue( "misc.fakelag.enable", true )
+        end
+    end
+
     -- Override Anti-Resolver
 
     if gui.GetValue("rbot.antiaim.advanced.antiresolver") then
@@ -1151,6 +1201,9 @@ local SETTINGS_UPDATER_UPDATE = gui.Button( SETTINGS_UPDATER_GBOX, "Update", fun
     writer:Close()
     LoadScript(GetScriptName())
 end )
+
+local SETTINGS_EXTRA_GBOX = gui.Groupbox( WINDOW, "Extra", 10, 300, 200, 0 )
+local SETTINGS_EXTRA_SHARED = gui.Checkbox( SETTINGS_EXTRA_GBOX, "settings.extra.shared", "Shared Anti-Aim State", false )
 
 local SETTINGS_INDICATOR_GBOX = gui.Groupbox( WINDOW, "Inverter Indicator", 220, 85, 200, 0 )
 local SETTINGS_INDICATOR_COLOR_ENABLED = gui.ColorPicker( SETTINGS_INDICATOR_GBOX, "settings.indicator.font.color.enabled", "Enabled Color", 124, 176, 34, 255)
@@ -1187,7 +1240,8 @@ local saveTable = {
         ["desyncplus.misc.inverter.key"] = 0, ["desyncplus.misc.inverter.indicator"] = false, 
         ["desyncplus.misc.inverter.settings.basedir"] = false, ["desyncplus.misc.inverter.settings.rotation"] = false, ["desyncplus.misc.inverter.settings.lby"] = false, ["desyncplus.misc.inverter.settings.onenemyshot"] = false, 
         ["desyncplus.misc.override.value"] = 0, ["desyncplus.misc.manual.left.key"] = 0, ["desyncplus.misc.manual.back.key"] = 0, ["desyncplus.misc.manual.right.key"] = 0, ["desyncplus.misc.manual.left.offset"] = 0, ["desyncplus.misc.manual.right.offset"] = 0,
-        ["desyncplus.settings.indicator.font.name"] = "", ["desyncplus.settings.indicator.font.size"] = 0, ["desyncplus.settings.indicator.x"] = 0, ["desyncplus.settings.indicator.y"] = 0
+        ["desyncplus.settings.indicator.font.name"] = "", ["desyncplus.settings.indicator.font.size"] = 0, ["desyncplus.settings.indicator.x"] = 0, ["desyncplus.settings.indicator.y"] = 0,
+        ["desyncplus.misc.fakelag.disableonrev"] = false, ["desyncplus.settings.extra.shared"] = false
     },
     {
         ["desyncplus.settings.indicator.font.color.enabled"] = {}, ["desyncplus.settings.indicator.font.color.disabled"] = {}
@@ -1327,7 +1381,7 @@ local SETTINGS_CONFIG_REFRESH_BTN = gui.Button( SETTINGS_CONFIG_GBOX, "Refresh",
 guiModify(SETTINGS_CONFIG_REFRESH_BTN, nil, 265, nil)
 
 local tblSETTINGS = {
-    SETTINGS_UPDATER_GBOX, SETTINGS_INDICATOR_GBOX, SETTINGS_CONFIG_GBOX
+    SETTINGS_UPDATER_GBOX, SETTINGS_INDICATOR_GBOX, SETTINGS_CONFIG_GBOX, SETTINGS_EXTRA_GBOX
 }
 
 local tblEVERYTHING = {
@@ -1357,6 +1411,14 @@ local function handleTabBtn()
 end
 
 local function handleStateBtn()
+    if SETTINGS_EXTRA_SHARED:GetValue() then
+        ANTIAIM_STATE_STANDING_BTN:SetDisabled(true)
+        ANTIAIM_STATE_MOVING_BTN:SetDisabled(true)
+        ANTIAIM_STATE_AIR_BTN:SetDisabled(true)
+        activeState = 0
+        return
+    end
+
     ANTIAIM_STATE_STANDING_BTN:SetDisabled(false)
     ANTIAIM_STATE_MOVING_BTN:SetDisabled(false)
     ANTIAIM_STATE_AIR_BTN:SetDisabled(false)
@@ -1387,6 +1449,12 @@ callbacks.Register( "Draw", function()
         WINDOW:SetActive(true)
         handleMenu()
         handleDelete()
+
+        if SETTINGS_EXTRA_SHARED:GetValue() then 
+            bShared = true 
+        else 
+            bShared = false 
+        end
 
         if bTabClicked then
             handleTabBtn()
@@ -1438,6 +1506,15 @@ callbacks.Register( "Draw", function()
         DESYNCPLUS_ANTIAIM_BASEDIR_STANDING_BASEVALUE:SetValue( iManualValue )
         DESYNCPLUS_ANTIAIM_BASEDIR_MOVING_BASEVALUE:SetValue( iManualValue )
         DESYNCPLUS_ANTIAIM_BASEDIR_AIR_BASEVALUE:SetValue( iManualValue )
+    end
+
+    if not entities.GetLocalPlayer() then
+        iBaseDirTick = 0
+        iRotationTick = 0
+        iLBYTick = 0
+        iPitchTick = 0
+        iSlowWalkTick = 0
+        iFakeLagTick = 0
     end
 end )
 
