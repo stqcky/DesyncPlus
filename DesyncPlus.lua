@@ -1,6 +1,6 @@
 -- Desync Plus by stacky
 
-DESYNCPLUS_CURRENT_VERSION = "2.0.1"
+DESYNCPLUS_CURRENT_VERSION = "2.0.2"
 DESYNCPLUS_LATEST_VERSION = "Not Checked"
 
 local SCREEN_W, SCREEN_H = draw.GetScreenSize()
@@ -37,7 +37,7 @@ guiModify(BUILDER_BTN, 205, -30, 180)
 local MISC_BTN = gui.Button( TABS_GBOX, "Misc", function()
     activeMenu = 2
     bTabClicked = true
-    WINDOW:SetHeight(435)
+    WINDOW:SetHeight(455)
 end )
 guiModify(MISC_BTN, 415, -30, 180)
 local SETTINGS_BTN = gui.Button( TABS_GBOX, "Settings", function()
@@ -353,12 +353,12 @@ DESYNCPLUS_ANTIAIM_ROTATION_AIR_MAXVALUE = gui.Slider( DESYNCPLUS_ANTIAIM_ROTATI
 DESYNCPLUS_ANTIAIM_ROTATION_AIR_SPEED = gui.Slider( DESYNCPLUS_ANTIAIM_ROTATION_AIR_GBOX, "antiaim.rotation.air.speed", "Speed", 0, 0, 100 )
 
 -- LBY
-local ANTIAIM_LBY_STANDING_GBOX = gui.Groupbox( WINDOW, "LBY", 430, 165, 200, 200 )
-local ANTIAIM_LBY_STANDING_TYPE = gui.Combobox( ANTIAIM_LBY_STANDING_GBOX, "antiaim.lby.standing.type", "Type", "Off", "Static", "Match", "Opposite", "Switch", "Cycle", "Jitter" )
-local ANTIAIM_LBY_STANDING_MINVALUE = gui.Slider( ANTIAIM_LBY_STANDING_GBOX, "antiaim.lby.standing.minvalue", "Minimal Value", 0, -180, 180 )
-local ANTIAIM_LBY_STANDING_MAXVALUE = gui.Slider( ANTIAIM_LBY_STANDING_GBOX, "antiaim.lby.standing.maxvalue", "Maximal Value", 0, -180, 180 )
-local ANTIAIM_LBY_STANDING_SPEED = gui.Slider( ANTIAIM_LBY_STANDING_GBOX, "antiaim.lby.standing.speed", "Speed", 0, 0, 100 )
-local ANTIAIM_LBY_STANDING_VALUE = gui.Slider( ANTIAIM_LBY_STANDING_GBOX, "antiaim.lby.standing.value", "Value", 0, 0, 180 )
+DESYNCPLUS_ANTIAIM_LBY_STANDING_GBOX = gui.Groupbox( WINDOW, "LBY", 430, 165, 200, 200 )
+DESYNCPLUS_ANTIAIM_LBY_STANDING_TYPE = gui.Combobox( DESYNCPLUS_ANTIAIM_LBY_STANDING_GBOX, "antiaim.lby.standing.type", "Type", "Off", "Static", "Match", "Opposite", "Switch", "Cycle", "Jitter" )
+DESYNCPLUS_ANTIAIM_LBY_STANDING_MINVALUE = gui.Slider( DESYNCPLUS_ANTIAIM_LBY_STANDING_GBOX, "antiaim.lby.standing.minvalue", "Minimal Value", 0, -180, 180 )
+DESYNCPLUS_ANTIAIM_LBY_STANDING_MAXVALUE = gui.Slider( DESYNCPLUS_ANTIAIM_LBY_STANDING_GBOX, "antiaim.lby.standing.maxvalue", "Maximal Value", 0, -180, 180 )
+DESYNCPLUS_ANTIAIM_LBY_STANDING_SPEED = gui.Slider( DESYNCPLUS_ANTIAIM_LBY_STANDING_GBOX, "antiaim.lby.standing.speed", "Speed", 0, 0, 100 )
+DESYNCPLUS_ANTIAIM_LBY_STANDING_VALUE = gui.Slider( DESYNCPLUS_ANTIAIM_LBY_STANDING_GBOX, "antiaim.lby.standing.value", "Value", 0, 0, 180 )
 
 local ANTIAIM_LBY_MOVING_GBOX = gui.Groupbox( WINDOW, "LBY", 430, 165, 200, 200 )
 local ANTIAIM_LBY_MOVING_TYPE = gui.Combobox( ANTIAIM_LBY_MOVING_GBOX, "antiaim.lby.moving.type", "Type", "Off", "Static", "Match", "Opposite", "Switch", "Cycle", "Jitter" )
@@ -394,7 +394,7 @@ local ANTIAIM_PITCH_AIR_MAXVALUE = gui.Slider( ANTIAIM_PITCH_AIR_GBOX, "antiaim.
 local ANTIAIM_PITCH_AIR_SPEED = gui.Slider( ANTIAIM_PITCH_AIR_GBOX, "antiaim.pitch.air.speed", "Speed", 0, 0, 100 )
 
 local tblANTIAIM = {
-    DESYNCPLUS_ANTIAIM_BASEDIR_STANDING_GBOX, DESYNCPLUS_ANTIAIM_ROTATION_STANDING_GBOX, ANTIAIM_LBY_STANDING_GBOX, ANTIAIM_PITCH_STANDING_GBOX,
+    DESYNCPLUS_ANTIAIM_BASEDIR_STANDING_GBOX, DESYNCPLUS_ANTIAIM_ROTATION_STANDING_GBOX, DESYNCPLUS_ANTIAIM_LBY_STANDING_GBOX, ANTIAIM_PITCH_STANDING_GBOX,
     DESYNCPLUS_ANTIAIM_BASEDIR_MOVING_GBOX, DESYNCPLUS_ANTIAIM_ROTATION_MOVING_GBOX, ANTIAIM_LBY_MOVING_GBOX, ANTIAIM_PITCH_MOVING_GBOX,
     DESYNCPLUS_ANTIAIM_BASEDIR_AIR_GBOX, DESYNCPLUS_ANTIAIM_ROTATION_AIR_GBOX, ANTIAIM_LBY_AIR_GBOX, ANTIAIM_PITCH_AIR_GBOX, ANTIAIM_STATE_GBOX
 }
@@ -418,9 +418,9 @@ local tblROTATION = {
 }
 
 local tblLBY = {
-    { ANTIAIM_LBY_STANDING_TYPE, ANTIAIM_LBY_MOVING_TYPE, ANTIAIM_LBY_AIR_TYPE },
+    { DESYNCPLUS_ANTIAIM_LBY_STANDING_TYPE, ANTIAIM_LBY_MOVING_TYPE, ANTIAIM_LBY_AIR_TYPE },
     {
-        { ANTIAIM_LBY_STANDING_MINVALUE, ANTIAIM_LBY_STANDING_MAXVALUE, ANTIAIM_LBY_STANDING_SPEED, ANTIAIM_LBY_STANDING_VALUE },
+        { DESYNCPLUS_ANTIAIM_LBY_STANDING_MINVALUE, DESYNCPLUS_ANTIAIM_LBY_STANDING_MAXVALUE, DESYNCPLUS_ANTIAIM_LBY_STANDING_SPEED, DESYNCPLUS_ANTIAIM_LBY_STANDING_VALUE },
         { ANTIAIM_LBY_MOVING_MINVALUE, ANTIAIM_LBY_MOVING_MAXVALUE, ANTIAIM_LBY_MOVING_SPEED, ANTIAIM_LBY_MOVING_VALUE },
         { ANTIAIM_LBY_AIR_MINVALUE, ANTIAIM_LBY_AIR_MAXVALUE, ANTIAIM_LBY_AIR_SPEED, ANTIAIM_LBY_AIR_VALUE }
     }
@@ -668,11 +668,11 @@ local function handleAntiaim(cmd)
             tblValues.Rotation.MaxValue = DESYNCPLUS_ANTIAIM_ROTATION_STANDING_MAXVALUE:GetValue()
             tblValues.Rotation.Speed = DESYNCPLUS_ANTIAIM_ROTATION_STANDING_SPEED:GetValue()
     
-            tblValues.LBY.Type = ANTIAIM_LBY_STANDING_TYPE:GetValue()
-            tblValues.LBY.MinValue = ANTIAIM_LBY_STANDING_MINVALUE:GetValue()
-            tblValues.LBY.MaxValue = ANTIAIM_LBY_STANDING_MAXVALUE:GetValue()
-            tblValues.LBY.Speed = ANTIAIM_LBY_STANDING_SPEED:GetValue()
-            tblValues.LBY.Value = ANTIAIM_LBY_STANDING_VALUE:GetValue()
+            tblValues.LBY.Type = DESYNCPLUS_ANTIAIM_LBY_STANDING_TYPE:GetValue()
+            tblValues.LBY.MinValue = DESYNCPLUS_ANTIAIM_LBY_STANDING_MINVALUE:GetValue()
+            tblValues.LBY.MaxValue = DESYNCPLUS_ANTIAIM_LBY_STANDING_MAXVALUE:GetValue()
+            tblValues.LBY.Speed = DESYNCPLUS_ANTIAIM_LBY_STANDING_SPEED:GetValue()
+            tblValues.LBY.Value = DESYNCPLUS_ANTIAIM_LBY_STANDING_VALUE:GetValue()
     
             tblValues.Pitch.Type = ANTIAIM_PITCH_STANDING_TYPE:GetValue()
             tblValues.Pitch.MinValue = ANTIAIM_PITCH_STANDING_MINVALUE:GetValue()
@@ -780,7 +780,7 @@ local function handleAntiaim(cmd)
         if iLBYDirection == 0 then iLBYAngle = iLBYAngle + tblValues.LBY.Speed / 4
         elseif iLBYDirection == 1 then iLBYAngle = iLBYAngle - tblValues.LBY.Speed / 4 end      
         gui.SetValue("rbot.antiaim.base.lby", iLBYAngle * iInvertLBY)
-    elseif globals.TickCount() >= iRotationTick + (100 - tblValues.LBY.Speed) * iTickRateMultiplier then 
+    elseif globals.TickCount() >= iLBYTick + (100 - tblValues.LBY.Speed) * iTickRateMultiplier then 
         if tblValues.LBY.Type == 4 then -- Switch
             if iLBYSwitch == tblValues.LBY.MinValue then
                 gui.SetValue( "rbot.antiaim.base.lby", tblValues.LBY.MaxValue * iInvertLBY )
@@ -793,7 +793,7 @@ local function handleAntiaim(cmd)
             gui.SetValue("rbot.antiaim.base.lby", math.random(tblValues.LBY.MinValue, tblValues.LBY.MaxValue) * iInvertLBY)
         end
 
-        iRotationTick = globals.TickCount()
+        iLBYTick = globals.TickCount()
     end
 
     -- Pitch
@@ -803,12 +803,14 @@ local function handleAntiaim(cmd)
         if flReadyTime < 0 and bShotRevolver then bShotRevolver = false end
         if flReadyTime >= 0 and bit.band(cmd.buttons, 1) ~= 0 and not bShotRevolver then
             bShotRevolver = true 
-            return 
+            return
         end
-    else
-        if bit.band(cmd.buttons, 1) ~= 0 then return end
     end
-    if bit.band(cmd.buttons, 32) ~= 0 then return end
+
+    if bit.band(cmd.buttons, 1) ~= 0 or bit.band(cmd.buttons, 2048) ~= 0 or bit.band(cmd.buttons, 32) ~= 0 then return end
+    if hLocalPlayer:GetWeaponType() == 9 then
+        if hLocalPlayer:GetPropEntity("m_hActiveWeapon"):GetProp("m_fThrowTime") ~= 0 then return end
+    end
 
     if tblValues.Pitch.Type == 1 then -- Static
         cmd.viewangles = EulerAngles(tblValues.Pitch.MinValue, cmd.viewangles["yaw"], 0)
@@ -856,7 +858,7 @@ local builderTable = {
     DESYNCPLUS_ANTIAIM_ROTATION_STANDING_MINVALUE, DESYNCPLUS_ANTIAIM_ROTATION_STANDING_MAXVALUE, DESYNCPLUS_ANTIAIM_ROTATION_STANDING_SPEED,
     DESYNCPLUS_ANTIAIM_ROTATION_MOVING_MINVALUE, DESYNCPLUS_ANTIAIM_ROTATION_MOVING_MAXVALUE, DESYNCPLUS_ANTIAIM_ROTATION_MOVING_SPEED,
     DESYNCPLUS_ANTIAIM_ROTATION_AIR_MINVALUE, DESYNCPLUS_ANTIAIM_ROTATION_AIR_MAXVALUE, DESYNCPLUS_ANTIAIM_ROTATION_AIR_SPEED,
-    ANTIAIM_LBY_STANDING_MINVALUE, ANTIAIM_LBY_STANDING_MAXVALUE, ANTIAIM_LBY_STANDING_SPEED, ANTIAIM_LBY_STANDING_VALUE,
+    DESYNCPLUS_ANTIAIM_LBY_STANDING_MINVALUE, DESYNCPLUS_ANTIAIM_LBY_STANDING_MAXVALUE, DESYNCPLUS_ANTIAIM_LBY_STANDING_SPEED, DESYNCPLUS_ANTIAIM_LBY_STANDING_VALUE,
     ANTIAIM_LBY_MOVING_MINVALUE, ANTIAIM_LBY_MOVING_MAXVALUE, ANTIAIM_LBY_MOVING_SPEED, ANTIAIM_LBY_MOVING_VALUE,
     ANTIAIM_LBY_AIR_MINVALUE, ANTIAIM_LBY_AIR_MAXVALUE, ANTIAIM_LBY_AIR_SPEED, ANTIAIM_LBY_AIR_VALUE,
     ANTIAIM_PITCH_STANDING_MINVALUE, ANTIAIM_PITCH_STANDING_MAXVALUE, ANTIAIM_PITCH_STANDING_SPEED,
@@ -1013,6 +1015,8 @@ local MISC_SLOWWALK_TYPE = gui.Combobox( MISC_SLOWWALK_GBOX, "misc.slowwalk.type
 local MISC_SLOWWALK_MINVALUE = gui.Slider( MISC_SLOWWALK_GBOX, "misc.slowwalk.minvalue", "Minimal Value", 1, 1, 100 )
 local MISC_SLOWWALK_MAXVALUE = gui.Slider( MISC_SLOWWALK_GBOX, "misc.slowwalk.maxvalue", "Maximal Value", 1, 1, 100 )
 local MISC_SLOWWALK_SPEED = gui.Slider( MISC_SLOWWALK_GBOX, "misc.slowwalk.speed", "Speed", 0, 0, 100 )
+local MISC_FAKEWALK_ENABLE = gui.Checkbox( MISC_SLOWWALK_GBOX, "misc.slowwalk.fakewalk.enable", "Fake Walk", false )
+local MISC_FAKEWALK_ANGLE = gui.Slider( MISC_SLOWWALK_GBOX, "misc.slowwalk.fakewalk.angle", "Fake Walk Angle", 0, -180, 180 )
 
 local MISC_FAKELAG_GBOX = gui.Groupbox( WINDOW, "Fakelag", 220, 85, 200, 0 )
 local MISC_FAKELAG_TYPE = gui.Combobox( MISC_FAKELAG_GBOX, "misc.fakelag.type", "Type", "Off", "Static", "Switch", "Cycle", "Jitter" )
@@ -1063,6 +1067,13 @@ local function handleMiscGUI()
         tblDisable = {false, false, false}
     end
 
+    if MISC_FAKEWALK_ENABLE:GetValue() then
+        tblDisable = {true, true, true}
+        MISC_FAKEWALK_ANGLE:SetDisabled(false)
+    else
+        MISC_FAKEWALK_ANGLE:SetDisabled(true)
+    end
+
     for i = 1, #tblSLOWWALK do
         tblSLOWWALK[i]:SetDisabled(tblDisable[i])
     end
@@ -1098,6 +1109,90 @@ local function handleMiscGUI()
         MISC_INVERTER_INDICATOR:SetDisabled(false)
         MISC_INVERTER_SETTINGS:SetDisabled(false)
     end
+end
+
+local iFakeWalkTick = 0
+
+local function handleFakeWalk(cmd)
+    local iSlowWalkBtn = gui.GetValue( "rbot.accuracy.movement.slowkey" )
+    if iSlowWalkBtn == 0 then return end
+    if not input.IsButtonDown( iSlowWalkBtn ) then 
+        iFakeWalkTick = 0
+        return 
+    end
+
+    local flSideSpeed = 0
+    local flForwardSpeed = 0
+
+    local bW = input.IsButtonDown( 87 )
+    local bA = input.IsButtonDown( 65 )
+    local bS = input.IsButtonDown( 83 )
+    local bD = input.IsButtonDown( 68 )
+
+    local bForward = bW or bS
+    local bSideways = bA or bD
+
+    if bA then
+        if not bForward then
+            flSideSpeed = flSideSpeed + -27.58
+        else
+            flSideSpeed = flSideSpeed + -19.5
+        end
+    end
+
+    if bD then
+        if not bForward then
+            flSideSpeed = flSideSpeed + 27.58
+        else
+            flSideSpeed = flSideSpeed + 19.5
+        end
+    end
+
+    if bW then
+        if not bSideways then
+            flForwardSpeed = flForwardSpeed + 27.58
+        else
+            flForwardSpeed = flForwardSpeed + 19.5
+        end
+    end
+
+    if bS then
+        if not bSideways then
+            flForwardSpeed = flForwardSpeed + -27.58
+        else
+            flForwardSpeed = flForwardSpeed + -19.5
+        end
+    end
+
+    local iLbyYaw = cmd.viewangles["yaw"] + MISC_FAKEWALK_ANGLE:GetValue()
+    if iLbyYaw < - 180 then iLbyYaw = 360 + iLbyYaw end
+    if iLbyYaw > 180 then iLbyYaw = -360 + iLbyYaw end
+
+    if iFakeWalkTick <= 3 then
+        cmd.sidemove = flSideSpeed / 2
+        cmd.forwardmove = flForwardSpeed / 2
+        cmd.sendpacket = false
+    elseif iFakeWalkTick == 4 then
+        cmd.sidemove = flSideSpeed / 4
+        cmd.forwardmove = flForwardSpeed / 4
+        cmd.sendpacket = false
+        if bit.band(cmd.buttons, 1) == 0 then cmd.viewangles = EulerAngles(89, iLbyYaw, 0) end
+    elseif iFakeWalkTick == 5 then
+        cmd.sidemove = 0
+        cmd.forwardmove = 0
+        cmd.sendpacket = false
+    elseif iFakeWalkTick == 6 then
+        cmd.sidemove = 0
+        cmd.forwardmove = 0
+        cmd.sendpacket = true
+    elseif iFakeWalkTick > 6 then
+        cmd.sidemove = flSideSpeed
+        cmd.forwardmove = flForwardSpeed
+        cmd.sendpacket = false
+        if iFakeWalkTick == 15 then iFakeWalkTick = -1 end
+    end
+
+    iFakeWalkTick = iFakeWalkTick + 1
 end
 
 local iSlowWalkTick = 0
@@ -1186,6 +1281,7 @@ local function handleMisc()
             gui.SetValue("rbot.antiaim.base.rotation", MISC_OVERRIDE_VALUE:GetValue() * -1)
         end
     end
+
 end
 
 local SETTINGS_UPDATER_GBOX = gui.Groupbox( WINDOW, "Updater", 10, 85, 200, 0 )
@@ -1241,7 +1337,7 @@ local saveTable = {
         ["desyncplus.misc.inverter.settings.basedir"] = false, ["desyncplus.misc.inverter.settings.rotation"] = false, ["desyncplus.misc.inverter.settings.lby"] = false, ["desyncplus.misc.inverter.settings.onenemyshot"] = false, 
         ["desyncplus.misc.override.value"] = 0, ["desyncplus.misc.manual.left.key"] = 0, ["desyncplus.misc.manual.back.key"] = 0, ["desyncplus.misc.manual.right.key"] = 0, ["desyncplus.misc.manual.left.offset"] = 0, ["desyncplus.misc.manual.right.offset"] = 0,
         ["desyncplus.settings.indicator.font.name"] = "", ["desyncplus.settings.indicator.font.size"] = 0, ["desyncplus.settings.indicator.x"] = 0, ["desyncplus.settings.indicator.y"] = 0,
-        ["desyncplus.misc.fakelag.disableonrev"] = false, ["desyncplus.settings.extra.shared"] = false
+        ["desyncplus.misc.fakelag.disableonrev"] = false, ["desyncplus.settings.extra.shared"] = false, ["desyncplus.misc.slowwalk.fakewalk.enable"] = false, ["desyncplus.misc.slowwalk.fakewalk.angle"] = 0
     },
     {
         ["desyncplus.settings.indicator.font.color.enabled"] = {}, ["desyncplus.settings.indicator.font.color.disabled"] = {}
@@ -1508,7 +1604,7 @@ callbacks.Register( "Draw", function()
         DESYNCPLUS_ANTIAIM_BASEDIR_AIR_BASEVALUE:SetValue( iManualValue )
     end
 
-    if not entities.GetLocalPlayer() then
+    if not entities.GetLocalPlayer() or not entities.GetLocalPlayer():IsAlive() then
         iBaseDirTick = 0
         iRotationTick = 0
         iLBYTick = 0
@@ -1523,6 +1619,10 @@ callbacks.Register( "CreateMove", function(cmd)
     handleAntiaim(cmd)
     handleMisc()
     handleBuilder()
+
+    if MISC_FAKEWALK_ENABLE:GetValue() then
+        handleFakeWalk(cmd)
+    end
 end )
 
 callbacks.Register( "FireGameEvent", function(event)
