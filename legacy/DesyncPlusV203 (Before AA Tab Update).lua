@@ -1,6 +1,6 @@
 -- Desync Plus by stacky
 
-DESYNCPLUS_CURRENT_VERSION = "2.0.4"
+DESYNCPLUS_CURRENT_VERSION = "2.0.3"
 DESYNCPLUS_LATEST_VERSION = "Not Checked"
 
 local SCREEN_W, SCREEN_H = draw.GetScreenSize()
@@ -625,13 +625,6 @@ local function calcCycle(angle, step)
     return angle + step
 end
 
-local tViewAngles = {
-    base = 0,
-    rotation = 0,
-    lby = 0,
-    pitch = 0
-}
-
 local function handleAntiaim(cmd)
     local hLocalPlayer = entities.GetLocalPlayer()
 
@@ -730,7 +723,7 @@ local function handleAntiaim(cmd)
     -- Base Direction
 
     if tblValues.BaseDir.Type == 1 then -- Static
-        tViewAngles.base = tblValues.BaseDir.BaseValue * iInvertBaseDir
+        gui.SetValue("rbot.antiaim.base", tblValues.BaseDir.BaseValue * iInvertBaseDir)
     elseif tblValues.BaseDir.Type == 3 then -- Cycle
         local iSteps = math.floor(tblValues.BaseDir.Speed / 4)
 
@@ -747,21 +740,21 @@ local function handleAntiaim(cmd)
             end
         end
 
-        tViewAngles.base = iBaseDirAngle * iInvertBaseDir
+        gui.SetValue("rbot.antiaim.base", iBaseDirAngle * iInvertBaseDir)
         iLastBaseValue = tblValues.BaseDir.BaseValue
     elseif globals.TickCount() >= iBaseDirTick + (100 - tblValues.BaseDir.Speed) * iTickRateMultiplier then 
         if tblValues.BaseDir.Type == 2 then -- Switch
             if iBaseDirSwitch == tblValues.BaseDir.MinValue then
-                tViewAngles.base = tblValues.BaseDir.MaxValue * iInvertBaseDir
+                gui.SetValue( "rbot.antiaim.base", tblValues.BaseDir.MaxValue * iInvertBaseDir )
                 iBaseDirSwitch = tblValues.BaseDir.MaxValue
             else
-                tViewAngles.base = tblValues.BaseDir.MinValue * iInvertBaseDir
+                gui.SetValue( "rbot.antiaim.base", tblValues.BaseDir.MinValue * iInvertBaseDir )
                 iBaseDirSwitch = tblValues.BaseDir.MinValue
             end
         elseif tblValues.BaseDir.Type == 4 then -- Jitter
             local iRandom = math.random(tblValues.BaseDir.MinValue, tblValues.BaseDir.MaxValue)       
             if tblValues.BaseDir.BaseValue + iRandom > 180 or tblValues.BaseDir.BaseValue + iRandom < -180 then tblValues.BaseDir.BaseValue = tblValues.BaseDir.BaseValue * -1 end
-            tViewAngles.base = (tblValues.BaseDir.BaseValue + iRandom) * iInvertBaseDir
+            gui.SetValue("rbot.antiaim.base", (tblValues.BaseDir.BaseValue + iRandom) * iInvertBaseDir)
         end
 
         iBaseDirTick = globals.TickCount()
@@ -770,7 +763,7 @@ local function handleAntiaim(cmd)
     -- Rotation
 
     if tblValues.Rotation.Type == 1 then -- Static
-        tViewAngles.rotation = tblValues.Rotation.MinValue * iInvertRotation
+        gui.SetValue("rbot.antiaim.base.rotation", tblValues.Rotation.MinValue * iInvertRotation)
     elseif tblValues.Rotation.Type == 3 then -- Cycle
         local speed = tblValues.Rotation.Speed / 4
 
@@ -787,14 +780,14 @@ local function handleAntiaim(cmd)
 
         if iRotationDirection == 0 then iRotationAngle = iRotationAngle + speed
         elseif iRotationDirection == 1 then iRotationAngle = iRotationAngle - speed end      
-        tViewAngles.rotation = iRotationAngle * iInvertRotation
+        gui.SetValue("rbot.antiaim.base.rotation", iRotationAngle * iInvertRotation)
     elseif globals.TickCount() >= iRotationTick + (100 - tblValues.Rotation.Speed) * iTickRateMultiplier then 
         if tblValues.Rotation.Type == 2 then -- Switch
             if iRotationSwitch == tblValues.Rotation.MinValue then
-                tViewAngles.rotation = tblValues.Rotation.MaxValue * iInvertRotation
+                gui.SetValue( "rbot.antiaim.base.rotation", tblValues.Rotation.MaxValue * iInvertRotation )
                 iRotationSwitch = tblValues.Rotation.MaxValue
             else
-                tViewAngles.rotation = tblValues.Rotation.MinValue * iInvertRotation
+                gui.SetValue( "rbot.antiaim.base.rotation", tblValues.Rotation.MinValue * iInvertRotation )
                 iRotationSwitch = tblValues.Rotation.MinValue
             end
         elseif tblValues.Rotation.Type == 4 then -- Jitter
@@ -810,7 +803,7 @@ local function handleAntiaim(cmd)
                 rndValue = rndValueMax
             end
 
-            tViewAngles.rotation = rndValue * iInvertRotation
+            gui.SetValue("rbot.antiaim.base.rotation", rndValue * iInvertRotation)
         end
 
         iRotationTick = globals.TickCount()
@@ -819,37 +812,37 @@ local function handleAntiaim(cmd)
     -- LBY
 
     if tblValues.LBY.Type == 1 then -- Static
-        tViewAngles.lby = tblValues.LBY.MinValue * iInvertLBY
+        gui.SetValue("rbot.antiaim.base.lby", tblValues.LBY.MinValue * iInvertLBY)
     elseif tblValues.LBY.Type == 2 then -- Match
-        if tViewAngles.rotation >= 0 then
-            tViewAngles.lby = tblValues.LBY.Value * iInvertLBY
+        if gui.GetValue("rbot.antiaim.base.rotation") >= 0 then
+            gui.SetValue( "rbot.antiaim.base.lby", tblValues.LBY.Value * iInvertLBY )
         else
-            tViewAngles.lby = tblValues.LBY.Value * -1 * iInvertLBY
+            gui.SetValue( "rbot.antiaim.base.lby", tblValues.LBY.Value * -1 * iInvertLBY )
         end
     elseif tblValues.LBY.Type == 3 then -- Opposite
-        if tViewAngles.rotation <= 0 then
-            tViewAngles.lby = tblValues.LBY.Value * iInvertLBY
+        if gui.GetValue("rbot.antiaim.base.rotation") <= 0 then
+            gui.SetValue( "rbot.antiaim.base.lby", tblValues.LBY.Value * iInvertLBY )
         else
-            tViewAngles.lby = tblValues.LBY.Value * -1 * iInvertLBY
+            gui.SetValue( "rbot.antiaim.base.lby", tblValues.LBY.Value * -1 * iInvertLBY )
         end
     elseif tblValues.LBY.Type == 5 then -- Cycle
         if iLBYAngle >= tblValues.LBY.MaxValue then iLBYDirection = 1 
         elseif iLBYAngle <= tblValues.LBY.MinValue + tblValues.LBY.Speed / 4 then  iLBYDirection = 0 end
 
         if iLBYDirection == 0 then iLBYAngle = iLBYAngle + tblValues.LBY.Speed / 4
-        elseif iLBYDirection == 1 then iLBYAngle = iLBYAngle - tblValues.LBY.Speed / 4 end   
-        tViewAngles.lby = iLBYAngle * iInvertLBY
+        elseif iLBYDirection == 1 then iLBYAngle = iLBYAngle - tblValues.LBY.Speed / 4 end      
+        gui.SetValue("rbot.antiaim.base.lby", iLBYAngle * iInvertLBY)
     elseif globals.TickCount() >= iLBYTick + (100 - tblValues.LBY.Speed) * iTickRateMultiplier then 
         if tblValues.LBY.Type == 4 then -- Switch
             if iLBYSwitch == tblValues.LBY.MinValue then
-                tViewAngles.lby = tblValues.LBY.MaxValue * iInvertLBY
+                gui.SetValue( "rbot.antiaim.base.lby", tblValues.LBY.MaxValue * iInvertLBY )
                 iLBYSwitch = tblValues.LBY.MaxValue
             else
-                tViewAngles.lby = tblValues.LBY.MinValue * iInvertLBY
+                gui.SetValue( "rbot.antiaim.base.lby", tblValues.LBY.MinValue * iInvertLBY )
                 iLBYSwitch = tblValues.LBY.MinValue
             end
         elseif tblValues.LBY.Type == 6 then -- Jitter
-            tViewAngles.lby = math.random(tblValues.LBY.MinValue, tblValues.LBY.MaxValue) * iInvertLBY
+            gui.SetValue("rbot.antiaim.base.lby", math.random(tblValues.LBY.MinValue, tblValues.LBY.MaxValue) * iInvertLBY)
         end
 
         iLBYTick = globals.TickCount()
@@ -857,79 +850,49 @@ local function handleAntiaim(cmd)
 
     -- Pitch
 
+    if hLocalPlayer:GetWeaponID() == 64 then
+        local flReadyTime = globals.CurTime() - hLocalPlayer:GetPropEntity("m_hActiveWeapon"):GetPropFloat("m_flPostponeFireReadyTime")
+        if flReadyTime < 0 and bShotRevolver then bShotRevolver = false end
+        if flReadyTime >= 0 and bit.band(cmd.buttons, 1) ~= 0 and not bShotRevolver then
+            bShotRevolver = true 
+            return
+        end
+    end
+
+    if bit.band(cmd.buttons, 1) ~= 0 or bit.band(cmd.buttons, 2048) ~= 0 or bit.band(cmd.buttons, 32) ~= 0 then return end
+    if hLocalPlayer:GetWeaponType() == 9 then
+        if hLocalPlayer:GetPropEntity("m_hActiveWeapon"):GetProp("m_fThrowTime") ~= 0 then return end
+    end
+
     if tblValues.Pitch.Type == 1 then -- Static
-        tViewAngles.pitch = tblValues.Pitch.MinValue
+        cmd.viewangles = EulerAngles(tblValues.Pitch.MinValue, cmd.viewangles["yaw"], 0)
     elseif tblValues.Pitch.Type == 3 then -- Cycle
         if iPitchAngle >= tblValues.Pitch.MaxValue then iPitchDirection = 1 
         elseif iPitchAngle <= tblValues.Pitch.MinValue + tblValues.Pitch.Speed / 4 then  iPitchDirection = 0 end
 
         if iPitchDirection == 0 then iPitchAngle = iPitchAngle + tblValues.Pitch.Speed / 4
         elseif iPitchDirection == 1 then iPitchAngle = iPitchAngle - tblValues.Pitch.Speed / 4 end    
-        tViewAngles.pitch = iPitchAngle
+        cmd.viewangles = EulerAngles(iPitchAngle, cmd.viewangles["yaw"], 0)  
     elseif globals.TickCount() >= iPitchTick + (100 - tblValues.Pitch.Speed) * iTickRateMultiplier then 
         if tblValues.Pitch.Type == 2 then -- Switch
             if iPitchSwitch == tblValues.Pitch.MinValue then
-                tViewAngles.pitch = tblValues.Pitch.MaxValue
+                cmd.viewangles = EulerAngles(tblValues.Pitch.MaxValue, cmd.viewangles["yaw"], 0)
                 iLastPitch = tblValues.Pitch.MaxValue
                 iPitchSwitch = tblValues.Pitch.MaxValue
             else
-                tViewAngles.pitch = tblValues.Pitch.MinValue
+                cmd.viewangles = EulerAngles(tblValues.Pitch.MinValue, cmd.viewangles["yaw"], 0)
                 iLastPitch = tblValues.Pitch.MinValue
                 iPitchSwitch = tblValues.Pitch.MinValue
             end
         elseif tblValues.Pitch.Type == 4 then -- Jitter
             local iRandom = math.random(tblValues.Pitch.MinValue, tblValues.Pitch.MaxValue)
-            tViewAngles.pitch = iRandom
+            cmd.viewangles = EulerAngles(iRandom, cmd.viewangles["yaw"], 0)
             iLastPitch = iRandom
         end
 
         iPitchTick = globals.TickCount()
     elseif tblValues.Pitch.Type ~= 0 then
-        tViewAngles.pitch = iLastPitch
-    end
-end
-
-local flOldCurtime = 0
-local bWasMoving = false
-local bShouldBreak = false
-local bBrokeThisTick = false
-
-local function handleLBY(cmd)
-    bBrokeThisTick = false
-    local hLocalPlayer = entities.GetLocalPlayer()
-    local flVelocity = Vector3(hLocalPlayer:GetPropFloat("localdata", "m_vecVelocity[0]"), hLocalPlayer:GetPropFloat("localdata", "m_vecVelocity[1]"), hLocalPlayer:GetPropFloat("localdata", "m_vecVelocity[2]")):Length2D()
-
-    if flVelocity >= 0.1 then
-        flOldCurtime = globals.CurTime()
-        bWasMoving = true
-    else
-        if bWasMoving and globals.CurTime() - flOldCurtime > 0.22 then
-            bWasMoving = false
-            bShouldBreak = true
-        elseif globals.CurTime() - flOldCurtime > 1.1 then
-            bShouldBreak = true
-        end
-    end
-
-    if bShouldBreak then
-        bBrokeThisTick = true
-        bShouldBreak = false
-        flOldCurtime = globals.CurTime()
-
-        cmd.viewangles = EulerAngles(tViewAngles.pitch, cmd.viewangles["yaw"] + tViewAngles.base + tViewAngles.lby, 0)
-        cmd.sendpacket = false
-    end
-end
-
-local function handleDesync(cmd)
-    if bBrokeThisTick then return end
-
-    if globals.TickCount() % 2 == 0 then
-        cmd.viewangles = EulerAngles(tViewAngles.pitch, cmd.viewangles["yaw"] + tViewAngles.base + tViewAngles.rotation * 2, 0)
-        cmd.sendpacket = false
-    else
-        cmd.viewangles = EulerAngles(tViewAngles.pitch, cmd.viewangles["yaw"] + tViewAngles.base, 0)
-        cmd.sendpacket = true
+        cmd.viewangles = EulerAngles(iLastPitch, cmd.viewangles["yaw"], 0)
     end
 end
 
@@ -1108,7 +1071,6 @@ local MISC_FAKEWALK_ENABLE = gui.Checkbox( MISC_SLOWWALK_GBOX, "misc.slowwalk.fa
 local MISC_FAKEWALK_ANGLE = gui.Slider( MISC_SLOWWALK_GBOX, "misc.slowwalk.fakewalk.angle", "Fake Walk Angle", 0, -180, 180 )
 
 local MISC_FAKELAG_GBOX = gui.Groupbox( WINDOW, "Fakelag", 220, 85, 200, 0 )
-MISC_FAKELAG_GBOX:SetDisabled(true)
 local MISC_FAKELAG_TYPE = gui.Combobox( MISC_FAKELAG_GBOX, "misc.fakelag.type", "Type", "Off", "Static", "Switch", "Cycle", "Jitter" )
 local MISC_FAKELAG_MINVALUE = gui.Slider( MISC_FAKELAG_GBOX, "misc.fakelag.minvalue", "Minimal Value", 3, 3, 17 )
 local MISC_FAKELAG_MAXVALUE = gui.Slider( MISC_FAKELAG_GBOX, "misc.fakelag.maxvalue", "Maximal Value", 3, 3, 17 )
@@ -1124,6 +1086,8 @@ local MISC_INVERTER_SETTINGS_ROTATION = gui.Checkbox(MISC_INVERTER_SETTINGS, "mi
 local MISC_INVERTER_SETTINGS_LBY = gui.Checkbox(MISC_INVERTER_SETTINGS, "misc.inverter.settings.lby", "Invert LBY", false)
 local MISC_INVERTER_SETTINGS_INVERTONENEMYSHOT = gui.Checkbox(MISC_INVERTER_SETTINGS, "misc.inverter.settings.onenemyshot", "Invert on Enemy Shot", false)
 
+local MISC_OVERRIDE_GBOX = gui.Groupbox( WINDOW, "Override Anti-Resolver", 430, 290, 200, 0 )
+local MISC_OVERRIDE_VALUE = gui.Slider( MISC_OVERRIDE_GBOX, "misc.override.value", "Override Value", 58, 0, 58 )
 local MISC_MANUAL_GBOX = gui.Groupbox( WINDOW, "Manual Anti-Aim", 640, 85, 200, 0 )
 local MISC_MANUAL_LEFT_KEY = gui.Keybox( MISC_MANUAL_GBOX, "misc.manual.left.key", "Left Key", 0 )
 local MISC_MANUAL_BACK_KEY = gui.Keybox( MISC_MANUAL_GBOX, "misc.manual.back.key", "Back Key", 0 )
@@ -1134,7 +1098,7 @@ local MISC_MANUAL_LEFT_OFFSET = gui.Slider( MISC_MANUAL_GBOX, "misc.manual.left.
 local MISC_MANUAL_RIGHT_OFFSET = gui.Slider( MISC_MANUAL_GBOX, "misc.manual.right.offset", "Right Offset", 0, 0, 180 )
 
 local tblMISC = {
-    MISC_SLOWWALK_GBOX, MISC_FAKELAG_GBOX, MISC_INVERTER_GBOX, MISC_MANUAL_GBOX
+    MISC_SLOWWALK_GBOX, MISC_FAKELAG_GBOX, MISC_INVERTER_GBOX, MISC_OVERRIDE_GBOX, MISC_MANUAL_GBOX
 }
 
 local tblSLOWWALK = {
@@ -1360,6 +1324,16 @@ local function handleMisc()
         end
     end
 
+    -- Override Anti-Resolver
+
+    if gui.GetValue("rbot.antiaim.advanced.antiresolver") then
+        if gui.GetValue("rbot.antiaim.base.rotation") >= 0 then
+            gui.SetValue("rbot.antiaim.base.rotation", MISC_OVERRIDE_VALUE:GetValue())
+        else
+            gui.SetValue("rbot.antiaim.base.rotation", MISC_OVERRIDE_VALUE:GetValue() * -1)
+        end
+    end
+
 end
 
 local SETTINGS_UPDATER_GBOX = gui.Groupbox( WINDOW, "Updater", 10, 85, 200, 0 )
@@ -1411,7 +1385,7 @@ local saveTable = {
         ["desyncplus.misc.fakelag.type"] = 0, ["desyncplus.misc.fakelag.minvalue"] = 0, ["desyncplus.misc.fakelag.maxvalue"] = 0, ["desyncplus.misc.fakelag.speed"] = 0,
         ["desyncplus.misc.inverter.key"] = 0, ["desyncplus.misc.inverter.indicator"] = false, 
         ["desyncplus.misc.inverter.settings.basedir"] = false, ["desyncplus.misc.inverter.settings.rotation"] = false, ["desyncplus.misc.inverter.settings.lby"] = false, ["desyncplus.misc.inverter.settings.onenemyshot"] = false, 
-        ["desyncplus.misc.manual.left.key"] = 0, ["desyncplus.misc.manual.back.key"] = 0, ["desyncplus.misc.manual.right.key"] = 0, ["desyncplus.misc.manual.left.offset"] = 0, ["desyncplus.misc.manual.right.offset"] = 0,
+        ["desyncplus.misc.override.value"] = 0, ["desyncplus.misc.manual.left.key"] = 0, ["desyncplus.misc.manual.back.key"] = 0, ["desyncplus.misc.manual.right.key"] = 0, ["desyncplus.misc.manual.left.offset"] = 0, ["desyncplus.misc.manual.right.offset"] = 0,
         ["desyncplus.settings.indicator.font.name"] = "", ["desyncplus.settings.indicator.font.size"] = 0, ["desyncplus.settings.indicator.x"] = 0, ["desyncplus.settings.indicator.y"] = 0,
         ["desyncplus.misc.fakelag.disableonrev"] = false, ["desyncplus.settings.extra.shared"] = false, ["desyncplus.misc.slowwalk.fakewalk.enable"] = false, ["desyncplus.misc.slowwalk.fakewalk.angle"] = 0,
         ["desyncplus.antiaim.rotation.standing.deadzone.min"] = 0, ["desyncplus.antiaim.rotation.standing.deadzone.max"] = 0,
@@ -1613,10 +1587,6 @@ end
 
 local iLastTick = 0
 callbacks.Register( "Draw", function()
-    gui.SetValue( "rbot.antiaim.enable", false )
-    gui.SetValue( "misc.fakelag.enable", true )
-    gui.SetValue( "misc.fakelag.factor", 3  )
-
     if AW_WINDOW:IsActive() then
         WINDOW:SetActive(true)
         handleMenu()
@@ -1690,37 +1660,9 @@ callbacks.Register( "Draw", function()
     end
 end )
 
-local bShotRevolver = false
-
 callbacks.Register( "CreateMove", function(cmd)
     if 1 / globals.TickInterval() == 128 then iTickRateMultiplier = 2 else iTickRateMultiplier = 1 end
-
-    cmd.sendpacket = true
-    local bDisable = false
-    local hLocalPlayer = entities.GetLocalPlayer()
-
-    if hLocalPlayer:GetWeaponID() == 64 then
-        local flReadyTime = globals.CurTime() - hLocalPlayer:GetPropEntity("m_hActiveWeapon"):GetPropFloat("m_flPostponeFireReadyTime")
-        if flReadyTime < 0 and bShotRevolver then bShotRevolver = false end
-        if flReadyTime >= 0 and bit.band(cmd.buttons, 1) ~= 0 and not bShotRevolver then
-            bShotRevolver = true 
-            bDisable = true 
-        end
-    else
-        if bit.band(cmd.buttons, 1) ~= 0 then bDisable = true end
-    end
-    if bit.band(cmd.buttons, 32) ~= 0 then bDisable = true end
-
-    if hLocalPlayer:GetWeaponType() == 9 then
-        if hLocalPlayer:GetPropEntity("m_hActiveWeapon"):GetProp("m_fThrowTime") ~= 0 then bDisable = true end
-    end
-
     handleAntiaim(cmd)
-    if not bDisable then
-        handleLBY(cmd)
-        handleDesync(cmd)
-    end
-    
     handleMisc()
     handleBuilder()
 
